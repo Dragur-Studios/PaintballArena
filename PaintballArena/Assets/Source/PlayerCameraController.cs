@@ -9,52 +9,42 @@ public class PlayerCameraController : MonoBehaviour
 
     public Transform orientation;
 
-    float xRot;
-    float yRot;
-    float tilt = 0;
+    [Header("Cache")]
+    [SerializeField, ReadOnly]float xRot;
+    [SerializeField, ReadOnly]float yRot;
 
-    PlayerWallRun wallRun;
+    [ReadOnly] public float Tilt = 0;
+
+    PlayerInputDispatcher dispatcher;
 
     private void Start()
     {
-        wallRun = FindObjectOfType<PlayerWallRun>();
+        dispatcher = FindObjectOfType<PlayerInputDispatcher>();
+        
+        dispatcher.OnLookInputRecieved += OnLookInputRecieved;
 
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
+
     }
 
-    private void Update()
+    void OnLookInputRecieved(Vector2 newLookDir)
     {
-        float mosueX = Input.GetAxisRaw("Mouse X") * Time.deltaTime * sensX;
-        float mouseY = Input.GetAxisRaw("Mouse Y") * Time.deltaTime * sensY;
+        float mosueX = newLookDir.x * Time.deltaTime * sensX;
+        float mouseY = newLookDir.y * Time.deltaTime * sensY;
 
         yRot += mosueX;
         xRot -= mouseY;
-        xRot = Mathf.Clamp(xRot, -90, 90);
-
-        transform.localRotation = Quaternion.Euler(xRot, yRot, tilt);
-        orientation.rotation = Quaternion.Euler(0, yRot, 0);
-
-        HandleCameraTilt();
+        xRot = Mathf.Clamp(xRot, -90, 60);
     }
 
-    void HandleCameraTilt()
+
+    private void Update()
     {
-
-        if (Mathf.Abs(wallRun.wallRunCameraTilt) < wallRun.maxWallRunCameraTilt && wallRun.isWallRunning && wallRun.isWallRight)
-        {
-            wallRun.wallRunCameraTilt += Time.deltaTime * wallRun.maxWallRunCameraTilt * 20f;
-        }
-        if (Mathf.Abs(wallRun.wallRunCameraTilt) < wallRun.maxWallRunCameraTilt && wallRun.isWallRunning && wallRun.isWallLeft)
-        {
-            wallRun.wallRunCameraTilt -= Time.deltaTime * wallRun.maxWallRunCameraTilt * 20f;
-        }
-
-        if (wallRun.wallRunCameraTilt > 0 && !wallRun.isWallRight && !wallRun.isWallLeft)
-            wallRun.wallRunCameraTilt -= Time.deltaTime * wallRun.maxWallRunCameraTilt * 20f;
-        if (wallRun.wallRunCameraTilt < 0 && !wallRun.isWallLeft && !wallRun.isWallRight)
-            wallRun.wallRunCameraTilt += Time.deltaTime * wallRun.maxWallRunCameraTilt * 20f;
-        tilt = wallRun.wallRunCameraTilt;
+        transform.localRotation = Quaternion.Euler(xRot, yRot, Tilt);
+        orientation.rotation = Quaternion.Euler(0, yRot, 0);
     }
+
+
 
 }

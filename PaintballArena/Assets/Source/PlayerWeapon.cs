@@ -51,6 +51,13 @@ public class PlayerWeapon : MonoBehaviour
 
     }
 
+    public void Reload()
+    {
+        if (CurrentMagazineCount >= MaxMagazineCount || CurrentStorageCount <= 0)
+            return;
+
+        StartReload();
+    }
 
     public void PullTrigger()
     {
@@ -81,19 +88,45 @@ public class PlayerWeapon : MonoBehaviour
     void StartReload()
     {
         isReloading = true;
-
-        if(CurrentStorageCount <= 0)
+        canFire = false;
+        if (CurrentStorageCount <= 0)
         {
+            // there is nothing to reload. we cannot reload.
             CurrentStorageCount = 0;
             isReloading = false;
             return;
         }
 
-        CurrentStorageCount -= MaxMagazineCount;
-        CurrentMagazineCount = MaxMagazineCount;
+        // recycle ammo..
+        int currentMagCount = CurrentMagazineCount;
+        if (currentMagCount > 0)
+        {
+            AddAmmoToStorage(currentMagCount);
+        }
         handler.OnAmmoChanged?.Invoke();
 
-        Invoke(nameof(StopReloading), reloadTimeS );
+
+        Invoke(nameof(StopReloading), reloadTimeS);
+    }
+
+    private void RemoveAmmoFromStorage(int amount)
+    {
+        // if there is nothing to remove from the sorage break early
+        if (CurrentStorageCount <= 0)
+            return;
+        // if we have some but not enough to fill the mag. add it
+        else if ( amount > CurrentStorageCount && CurrentStorageCount > 0)
+        {
+            int remaining = CurrentStorageCount;
+            CurrentStorageCount = 0;              // just remove everything from the storage
+            CurrentMagazineCount = remaining;     // add what is in the storage
+        }
+        // there is sufficient ammo, remove a magazine
+        else
+        {
+            CurrentStorageCount -= amount;              // remove the amount requested
+            CurrentMagazineCount = amount;              // update the magazine
+        }
     }
 
     void StartFiring()
@@ -107,8 +140,11 @@ public class PlayerWeapon : MonoBehaviour
     }
     void StopReloading()
     {
+        RemoveAmmoFromStorage(MaxMagazineCount);
+        handler.OnAmmoChanged?.Invoke();
+
         isReloading = false;
-        StopFiring();
+        canFire = true;
     }
     
     void SpawnProjectile()
@@ -122,12 +158,24 @@ public class PlayerWeapon : MonoBehaviour
 
     internal bool AddAmmoToStorage(int amount)
     {
-        var sum = (CurrentStorageCount + amount);
-        var diff = sum - MaxStorageCount;
-        if (sum >= 10) // tolerence of 10 being added before it cannot be picked up
+        if (CurrentStorageCount >= MaxStorageCount)
         {
+            CurrentStorageCount = MaxStorageCount; // just to be sure because of the above check could result in having too much ammo
             return false;
         }
+
+        // if the amount is equal to the max storage amount it means that we are adding from a crate.
+        // go ahead and skip this step if we are picking up a crate.
+        if(amount != MaxStorageCount)
+        {
+            var sum = (CurrentStorageCount + amount);
+            var diff = sum - MaxStorageCount;
+            if (diff >= 10) // tolerence of 10 being added before it cannot be picked up
+            {
+                return false;
+            }
+        }
+        
 
         bool shouldReload = false;
 

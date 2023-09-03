@@ -10,30 +10,7 @@ public class AmmoPickup : MonoBehaviour
         Magazine,
         Crate
     };
-    public AmmoPickupType type;
+    public AmmoPickupType Type;
 
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.CompareTag("Player"))
-        {
-            var weaponHandler = other.GetComponent<PlayerWeaponHandler>();
-            int amountToAdd = 0;
-            switch (type)
-            {
-                case AmmoPickupType.Magazine:
-                    amountToAdd = weaponHandler.GetMagizineSize();
-                    break;
-                case AmmoPickupType.Crate:
-                    amountToAdd = weaponHandler.GetStorageSize();
-                    break;
-            }
-
-            if (weaponHandler.AddAmmo(amountToAdd))
-            {
-                Destroy(gameObject);
-            }
-           
-
-        }
-    }
+  
 }

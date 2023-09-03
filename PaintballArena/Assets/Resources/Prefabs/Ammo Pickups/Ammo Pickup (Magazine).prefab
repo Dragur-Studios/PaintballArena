@@ -1,0 +1,1047 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &3331394442919405639
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7896862362175230416}
+  - component: {fileID: 6068934504127876310}
+  m_Layer: 0
+  m_Name: GameObject
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7896862362175230416
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3331394442919405639}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 9132743957865446889}
+  - {fileID: 4433346550022462166}
+  - {fileID: 4958036184419442735}
+  - {fileID: 2242323312188707837}
+  - {fileID: 4266135231857179772}
+  - {fileID: 2161553557988057205}
+  - {fileID: 2967673956008895158}
+  - {fileID: 3532769707713353991}
+  - {fileID: 4370695175074062756}
+  - {fileID: 6274197563703017211}
+  - {fileID: 3144490223079284461}
+  m_Father: {fileID: 1757492827890092132}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6068934504127876310
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3331394442919405639}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7256bed9abfacf349ac8020a7c7cad9e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  RotationSpeed: 1
+  axis: 1
+--- !u!1 &4123414336703827093
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1667063234172762376}
+  - component: {fileID: 2398974490863396494}
+  - component: {fileID: 5965834054542734942}
+  m_Layer: 0
+  m_Name: Indicator
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1667063234172762376
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4123414336703827093}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0.7071068, y: -0, z: -0, w: 0.7071068}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1757492827890092132}
+  m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
+--- !u!33 &2398974490863396494
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4123414336703827093}
+  m_Mesh: {fileID: 10210, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!23 &5965834054542734942
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4123414336703827093}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: 8302d5d54d0b60044a2dd962b7dce10e, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
+--- !u!1 &5376488574016300844
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1757492827890092132}
+  - component: {fileID: 8641852335975253631}
+  m_Layer: 0
+  m_Name: Ammo Pickup (Magazine)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1757492827890092132
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5376488574016300844}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 33.25, y: 0.069, z: 30.75}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1667063234172762376}
+  - {fileID: 7896862362175230416}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8641852335975253631
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5376488574016300844}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 533d861af5fa9bb4c9d6a661c2402848, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  type: 0
+--- !u!1001 &529629590540801777
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 7896862362175230416}
+    m_Modifications:
+    - target: {fileID: 3758445767490754086, guid: 666ebfeae96967e4ab7f29cf710a978b,
+        type: 3}
+      propertyPath: m_Name
+      value: Paintball Projectile (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 5785984500254894090, guid: 666ebfeae96967e4ab7f29cf710a978b,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.101
+      objectReference: {fileID: 0}
+    - target: {fileID: 5785984500254894090, guid: 666ebfeae96967e4ab7f29cf710a978b,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5785984500254894090, guid: 666ebfeae96967e4ab7f29cf710a978b,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.052
+      objectReference: {fileID: 0}
+    - target: {fileID: 5785984500254894090, guid: 666ebfeae96967e4ab7f29cf710a978b,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5785984500254894090, guid: 666ebfeae96967e4ab7f29cf710a978b,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5785984500254894090, guid: 666ebfeae96967e4ab7f29cf710a978b,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5785984500254894090, guid: 666ebfeae96967e4ab7f29cf710a978b,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5785984500254894090, guid: 666ebfeae96967e4ab7f29cf710a978b,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5785984500254894090, guid: 666ebfeae96967e4ab7f29cf710a978b,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5785984500254894090, guid: 666ebfeae96967e4ab7f29cf710a978b,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 1555112380537054848, guid: 666ebfeae96967e4ab7f29cf710a978b, type: 3}
+    - {fileID: 6383935118534940897, guid: 666ebfeae96967e4ab7f29cf710a978b, type: 3}
+    - {fileID: 1717654870930000527, guid: 666ebfeae96967e4ab7f29cf710a978b, type: 3}
+    - {fileID: 6255195011072872847, guid: 666ebfeae96967e4ab7f29cf710a978b, type: 3}
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 666ebfeae96967e4ab7f29cf710a978b, type: 3}
+--- !u!4 &6274197563703017211 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 5785984500254894090, guid: 666ebfeae96967e4ab7f29cf710a978b,
+    type: 3}
+  m_PrefabInstance: {fileID: 529629590540801777}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &1478739352786913317
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 7896862362175230416}
+    m_Modifications:
+    - target: {fileID: 3758445767490754086, guid: 666ebfeae96967e4ab7f29cf710a978b,
+        type: 3}
+      propertyPath: m_Name
+      value: Paintball Projectile (4)
+      objectReference: {fileID: 0}
+    - target: {fileID: 5785984500254894090, guid: 666ebfeae96967e4ab7f29cf710a978b,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.0995
+      objectReference: {fileID: 0}
+    - target: {fileID: 5785984500254894090, guid: 666ebfeae96967e4ab7f29cf710a978b,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5785984500254894090, guid: 666ebfeae96967e4ab7f29cf710a978b,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -0.0453
+      objectReference: {fileID: 0}
+    - target: {fileID: 5785984500254894090, guid: 666ebfeae96967e4ab7f29cf710a978b,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5785984500254894090, guid: 666ebfeae96967e4ab7f29cf710a978b,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5785984500254894090, guid: 666ebfeae96967e4ab7f29cf710a978b,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5785984500254894090, guid: 666ebfeae96967e4ab7f29cf710a978b,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5785984500254894090, guid: 666ebfeae96967e4ab7f29cf710a978b,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5785984500254894090, guid: 666ebfeae96967e4ab7f29cf710a978b,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5785984500254894090, guid: 666ebfeae96967e4ab7f29cf710a978b,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 1555112380537054848, guid: 666ebfeae96967e4ab7f29cf710a978b, type: 3}
+    - {fileID: 6383935118534940897, guid: 666ebfeae96967e4ab7f29cf710a978b, type: 3}
+    - {fileID: 1717654870930000527, guid: 666ebfeae96967e4ab7f29cf710a978b, type: 3}
+    - {fileID: 6255195011072872847, guid: 666ebfeae96967e4ab7f29cf710a978b, type: 3}
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 666ebfeae96967e4ab7f29cf710a978b, type: 3}
+--- !u!4 &4958036184419442735 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 5785984500254894090, guid: 666ebfeae96967e4ab7f29cf710a978b,
+    type: 3}
+  m_PrefabInstance: {fileID: 1478739352786913317}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &3383878981591881187
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 7896862362175230416}
+    m_Modifications:
+    - target: {fileID: 3758445767490754086, guid: 666ebfeae96967e4ab7f29cf710a978b,
+        type: 3}
+      propertyPath: m_Name
+      value: Paintball Projectile
+      objectReference: {fileID: 0}
+    - target: {fileID: 5785984500254894090, guid: 666ebfeae96967e4ab7f29cf710a978b,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5785984500254894090, guid: 666ebfeae96967e4ab7f29cf710a978b,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5785984500254894090, guid: 666ebfeae96967e4ab7f29cf710a978b,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5785984500254894090, guid: 666ebfeae96967e4ab7f29cf710a978b,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5785984500254894090, guid: 666ebfeae96967e4ab7f29cf710a978b,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5785984500254894090, guid: 666ebfeae96967e4ab7f29cf710a978b,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5785984500254894090, guid: 666ebfeae96967e4ab7f29cf710a978b,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5785984500254894090, guid: 666ebfeae96967e4ab7f29cf710a978b,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5785984500254894090, guid: 666ebfeae96967e4ab7f29cf710a978b,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5785984500254894090, guid: 666ebfeae96967e4ab7f29cf710a978b,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 1555112380537054848, guid: 666ebfeae96967e4ab7f29cf710a978b, type: 3}
+    - {fileID: 6383935118534940897, guid: 666ebfeae96967e4ab7f29cf710a978b, type: 3}
+    - {fileID: 1717654870930000527, guid: 666ebfeae96967e4ab7f29cf710a978b, type: 3}
+    - {fileID: 6255195011072872847, guid: 666ebfeae96967e4ab7f29cf710a978b, type: 3}
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 666ebfeae96967e4ab7f29cf710a978b, type: 3}
+--- !u!4 &9132743957865446889 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 5785984500254894090, guid: 666ebfeae96967e4ab7f29cf710a978b,
+    type: 3}
+  m_PrefabInstance: {fileID: 3383878981591881187}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &5599262678553446527
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 7896862362175230416}
+    m_Modifications:
+    - target: {fileID: 3758445767490754086, guid: 666ebfeae96967e4ab7f29cf710a978b,
+        type: 3}
+      propertyPath: m_Name
+      value: Paintball Projectile (7)
+      objectReference: {fileID: 0}
+    - target: {fileID: 5785984500254894090, guid: 666ebfeae96967e4ab7f29cf710a978b,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.0334
+      objectReference: {fileID: 0}
+    - target: {fileID: 5785984500254894090, guid: 666ebfeae96967e4ab7f29cf710a978b,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.0895
+      objectReference: {fileID: 0}
+    - target: {fileID: 5785984500254894090, guid: 666ebfeae96967e4ab7f29cf710a978b,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.0274
+      objectReference: {fileID: 0}
+    - target: {fileID: 5785984500254894090, guid: 666ebfeae96967e4ab7f29cf710a978b,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5785984500254894090, guid: 666ebfeae96967e4ab7f29cf710a978b,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5785984500254894090, guid: 666ebfeae96967e4ab7f29cf710a978b,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5785984500254894090, guid: 666ebfeae96967e4ab7f29cf710a978b,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5785984500254894090, guid: 666ebfeae96967e4ab7f29cf710a978b,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5785984500254894090, guid: 666ebfeae96967e4ab7f29cf710a978b,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5785984500254894090, guid: 666ebfeae96967e4ab7f29cf710a978b,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 1555112380537054848, guid: 666ebfeae96967e4ab7f29cf710a978b, type: 3}
+    - {fileID: 6383935118534940897, guid: 666ebfeae96967e4ab7f29cf710a978b, type: 3}
+    - {fileID: 1717654870930000527, guid: 666ebfeae96967e4ab7f29cf710a978b, type: 3}
+    - {fileID: 6255195011072872847, guid: 666ebfeae96967e4ab7f29cf710a978b, type: 3}
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 666ebfeae96967e4ab7f29cf710a978b, type: 3}
+--- !u!4 &2161553557988057205 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 5785984500254894090, guid: 666ebfeae96967e4ab7f29cf710a978b,
+    type: 3}
+  m_PrefabInstance: {fileID: 5599262678553446527}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &5716659003456371703
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 7896862362175230416}
+    m_Modifications:
+    - target: {fileID: 3758445767490754086, guid: 666ebfeae96967e4ab7f29cf710a978b,
+        type: 3}
+      propertyPath: m_Name
+      value: Paintball Projectile (5)
+      objectReference: {fileID: 0}
+    - target: {fileID: 5785984500254894090, guid: 666ebfeae96967e4ab7f29cf710a978b,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.0905
+      objectReference: {fileID: 0}
+    - target: {fileID: 5785984500254894090, guid: 666ebfeae96967e4ab7f29cf710a978b,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5785984500254894090, guid: 666ebfeae96967e4ab7f29cf710a978b,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.0549
+      objectReference: {fileID: 0}
+    - target: {fileID: 5785984500254894090, guid: 666ebfeae96967e4ab7f29cf710a978b,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5785984500254894090, guid: 666ebfeae96967e4ab7f29cf710a978b,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5785984500254894090, guid: 666ebfeae96967e4ab7f29cf710a978b,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5785984500254894090, guid: 666ebfeae96967e4ab7f29cf710a978b,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5785984500254894090, guid: 666ebfeae96967e4ab7f29cf710a978b,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5785984500254894090, guid: 666ebfeae96967e4ab7f29cf710a978b,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5785984500254894090, guid: 666ebfeae96967e4ab7f29cf710a978b,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 1555112380537054848, guid: 666ebfeae96967e4ab7f29cf710a978b, type: 3}
+    - {fileID: 6383935118534940897, guid: 666ebfeae96967e4ab7f29cf710a978b, type: 3}
+    - {fileID: 1717654870930000527, guid: 666ebfeae96967e4ab7f29cf710a978b, type: 3}
+    - {fileID: 6255195011072872847, guid: 666ebfeae96967e4ab7f29cf710a978b, type: 3}
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 666ebfeae96967e4ab7f29cf710a978b, type: 3}
+--- !u!4 &2242323312188707837 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 5785984500254894090, guid: 666ebfeae96967e4ab7f29cf710a978b,
+    type: 3}
+  m_PrefabInstance: {fileID: 5716659003456371703}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &7011288145192300813
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 7896862362175230416}
+    m_Modifications:
+    - target: {fileID: 3758445767490754086, guid: 666ebfeae96967e4ab7f29cf710a978b,
+        type: 3}
+      propertyPath: m_Name
+      value: Paintball Projectile (9)
+      objectReference: {fileID: 0}
+    - target: {fileID: 5785984500254894090, guid: 666ebfeae96967e4ab7f29cf710a978b,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.0138
+      objectReference: {fileID: 0}
+    - target: {fileID: 5785984500254894090, guid: 666ebfeae96967e4ab7f29cf710a978b,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.0895
+      objectReference: {fileID: 0}
+    - target: {fileID: 5785984500254894090, guid: 666ebfeae96967e4ab7f29cf710a978b,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -0.0685
+      objectReference: {fileID: 0}
+    - target: {fileID: 5785984500254894090, guid: 666ebfeae96967e4ab7f29cf710a978b,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5785984500254894090, guid: 666ebfeae96967e4ab7f29cf710a978b,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5785984500254894090, guid: 666ebfeae96967e4ab7f29cf710a978b,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5785984500254894090, guid: 666ebfeae96967e4ab7f29cf710a978b,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5785984500254894090, guid: 666ebfeae96967e4ab7f29cf710a978b,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5785984500254894090, guid: 666ebfeae96967e4ab7f29cf710a978b,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5785984500254894090, guid: 666ebfeae96967e4ab7f29cf710a978b,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 1555112380537054848, guid: 666ebfeae96967e4ab7f29cf710a978b, type: 3}
+    - {fileID: 6383935118534940897, guid: 666ebfeae96967e4ab7f29cf710a978b, type: 3}
+    - {fileID: 1717654870930000527, guid: 666ebfeae96967e4ab7f29cf710a978b, type: 3}
+    - {fileID: 6255195011072872847, guid: 666ebfeae96967e4ab7f29cf710a978b, type: 3}
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 666ebfeae96967e4ab7f29cf710a978b, type: 3}
+--- !u!4 &3532769707713353991 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 5785984500254894090, guid: 666ebfeae96967e4ab7f29cf710a978b,
+    type: 3}
+  m_PrefabInstance: {fileID: 7011288145192300813}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &7746096099642561654
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 7896862362175230416}
+    m_Modifications:
+    - target: {fileID: 3758445767490754086, guid: 666ebfeae96967e4ab7f29cf710a978b,
+        type: 3}
+      propertyPath: m_Name
+      value: Paintball Projectile (6)
+      objectReference: {fileID: 0}
+    - target: {fileID: 5785984500254894090, guid: 666ebfeae96967e4ab7f29cf710a978b,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.0043
+      objectReference: {fileID: 0}
+    - target: {fileID: 5785984500254894090, guid: 666ebfeae96967e4ab7f29cf710a978b,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5785984500254894090, guid: 666ebfeae96967e4ab7f29cf710a978b,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.1041
+      objectReference: {fileID: 0}
+    - target: {fileID: 5785984500254894090, guid: 666ebfeae96967e4ab7f29cf710a978b,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5785984500254894090, guid: 666ebfeae96967e4ab7f29cf710a978b,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5785984500254894090, guid: 666ebfeae96967e4ab7f29cf710a978b,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5785984500254894090, guid: 666ebfeae96967e4ab7f29cf710a978b,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5785984500254894090, guid: 666ebfeae96967e4ab7f29cf710a978b,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5785984500254894090, guid: 666ebfeae96967e4ab7f29cf710a978b,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5785984500254894090, guid: 666ebfeae96967e4ab7f29cf710a978b,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 1555112380537054848, guid: 666ebfeae96967e4ab7f29cf710a978b, type: 3}
+    - {fileID: 6383935118534940897, guid: 666ebfeae96967e4ab7f29cf710a978b, type: 3}
+    - {fileID: 1717654870930000527, guid: 666ebfeae96967e4ab7f29cf710a978b, type: 3}
+    - {fileID: 6255195011072872847, guid: 666ebfeae96967e4ab7f29cf710a978b, type: 3}
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 666ebfeae96967e4ab7f29cf710a978b, type: 3}
+--- !u!4 &4266135231857179772 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 5785984500254894090, guid: 666ebfeae96967e4ab7f29cf710a978b,
+    type: 3}
+  m_PrefabInstance: {fileID: 7746096099642561654}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &7848690193343596974
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 7896862362175230416}
+    m_Modifications:
+    - target: {fileID: 3758445767490754086, guid: 666ebfeae96967e4ab7f29cf710a978b,
+        type: 3}
+      propertyPath: m_Name
+      value: Paintball Projectile (10)
+      objectReference: {fileID: 0}
+    - target: {fileID: 5785984500254894090, guid: 666ebfeae96967e4ab7f29cf710a978b,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.0138
+      objectReference: {fileID: 0}
+    - target: {fileID: 5785984500254894090, guid: 666ebfeae96967e4ab7f29cf710a978b,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.182
+      objectReference: {fileID: 0}
+    - target: {fileID: 5785984500254894090, guid: 666ebfeae96967e4ab7f29cf710a978b,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -0.005
+      objectReference: {fileID: 0}
+    - target: {fileID: 5785984500254894090, guid: 666ebfeae96967e4ab7f29cf710a978b,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5785984500254894090, guid: 666ebfeae96967e4ab7f29cf710a978b,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5785984500254894090, guid: 666ebfeae96967e4ab7f29cf710a978b,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5785984500254894090, guid: 666ebfeae96967e4ab7f29cf710a978b,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5785984500254894090, guid: 666ebfeae96967e4ab7f29cf710a978b,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5785984500254894090, guid: 666ebfeae96967e4ab7f29cf710a978b,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5785984500254894090, guid: 666ebfeae96967e4ab7f29cf710a978b,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 1555112380537054848, guid: 666ebfeae96967e4ab7f29cf710a978b, type: 3}
+    - {fileID: 6383935118534940897, guid: 666ebfeae96967e4ab7f29cf710a978b, type: 3}
+    - {fileID: 1717654870930000527, guid: 666ebfeae96967e4ab7f29cf710a978b, type: 3}
+    - {fileID: 6255195011072872847, guid: 666ebfeae96967e4ab7f29cf710a978b, type: 3}
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 666ebfeae96967e4ab7f29cf710a978b, type: 3}
+--- !u!4 &4370695175074062756 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 5785984500254894090, guid: 666ebfeae96967e4ab7f29cf710a978b,
+    type: 3}
+  m_PrefabInstance: {fileID: 7848690193343596974}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &7912150603010224860
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 7896862362175230416}
+    m_Modifications:
+    - target: {fileID: 3758445767490754086, guid: 666ebfeae96967e4ab7f29cf710a978b,
+        type: 3}
+      propertyPath: m_Name
+      value: Paintball Projectile (3)
+      objectReference: {fileID: 0}
+    - target: {fileID: 5785984500254894090, guid: 666ebfeae96967e4ab7f29cf710a978b,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.0118
+      objectReference: {fileID: 0}
+    - target: {fileID: 5785984500254894090, guid: 666ebfeae96967e4ab7f29cf710a978b,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5785984500254894090, guid: 666ebfeae96967e4ab7f29cf710a978b,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -0.109
+      objectReference: {fileID: 0}
+    - target: {fileID: 5785984500254894090, guid: 666ebfeae96967e4ab7f29cf710a978b,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5785984500254894090, guid: 666ebfeae96967e4ab7f29cf710a978b,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5785984500254894090, guid: 666ebfeae96967e4ab7f29cf710a978b,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5785984500254894090, guid: 666ebfeae96967e4ab7f29cf710a978b,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5785984500254894090, guid: 666ebfeae96967e4ab7f29cf710a978b,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5785984500254894090, guid: 666ebfeae96967e4ab7f29cf710a978b,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5785984500254894090, guid: 666ebfeae96967e4ab7f29cf710a978b,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 1555112380537054848, guid: 666ebfeae96967e4ab7f29cf710a978b, type: 3}
+    - {fileID: 6383935118534940897, guid: 666ebfeae96967e4ab7f29cf710a978b, type: 3}
+    - {fileID: 1717654870930000527, guid: 666ebfeae96967e4ab7f29cf710a978b, type: 3}
+    - {fileID: 6255195011072872847, guid: 666ebfeae96967e4ab7f29cf710a978b, type: 3}
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 666ebfeae96967e4ab7f29cf710a978b, type: 3}
+--- !u!4 &4433346550022462166 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 5785984500254894090, guid: 666ebfeae96967e4ab7f29cf710a978b,
+    type: 3}
+  m_PrefabInstance: {fileID: 7912150603010224860}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &8747320344400710332
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 7896862362175230416}
+    m_Modifications:
+    - target: {fileID: 3758445767490754086, guid: 666ebfeae96967e4ab7f29cf710a978b,
+        type: 3}
+      propertyPath: m_Name
+      value: Paintball Projectile (8)
+      objectReference: {fileID: 0}
+    - target: {fileID: 5785984500254894090, guid: 666ebfeae96967e4ab7f29cf710a978b,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.0562
+      objectReference: {fileID: 0}
+    - target: {fileID: 5785984500254894090, guid: 666ebfeae96967e4ab7f29cf710a978b,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.0895
+      objectReference: {fileID: 0}
+    - target: {fileID: 5785984500254894090, guid: 666ebfeae96967e4ab7f29cf710a978b,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -0.0025
+      objectReference: {fileID: 0}
+    - target: {fileID: 5785984500254894090, guid: 666ebfeae96967e4ab7f29cf710a978b,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5785984500254894090, guid: 666ebfeae96967e4ab7f29cf710a978b,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5785984500254894090, guid: 666ebfeae96967e4ab7f29cf710a978b,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5785984500254894090, guid: 666ebfeae96967e4ab7f29cf710a978b,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5785984500254894090, guid: 666ebfeae96967e4ab7f29cf710a978b,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5785984500254894090, guid: 666ebfeae96967e4ab7f29cf710a978b,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5785984500254894090, guid: 666ebfeae96967e4ab7f29cf710a978b,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 1555112380537054848, guid: 666ebfeae96967e4ab7f29cf710a978b, type: 3}
+    - {fileID: 6383935118534940897, guid: 666ebfeae96967e4ab7f29cf710a978b, type: 3}
+    - {fileID: 1717654870930000527, guid: 666ebfeae96967e4ab7f29cf710a978b, type: 3}
+    - {fileID: 6255195011072872847, guid: 666ebfeae96967e4ab7f29cf710a978b, type: 3}
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 666ebfeae96967e4ab7f29cf710a978b, type: 3}
+--- !u!4 &2967673956008895158 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 5785984500254894090, guid: 666ebfeae96967e4ab7f29cf710a978b,
+    type: 3}
+  m_PrefabInstance: {fileID: 8747320344400710332}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &8928539152565122791
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 7896862362175230416}
+    m_Modifications:
+    - target: {fileID: 3758445767490754086, guid: 666ebfeae96967e4ab7f29cf710a978b,
+        type: 3}
+      propertyPath: m_Name
+      value: Paintball Projectile (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 5785984500254894090, guid: 666ebfeae96967e4ab7f29cf710a978b,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.083
+      objectReference: {fileID: 0}
+    - target: {fileID: 5785984500254894090, guid: 666ebfeae96967e4ab7f29cf710a978b,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5785984500254894090, guid: 666ebfeae96967e4ab7f29cf710a978b,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -0.057
+      objectReference: {fileID: 0}
+    - target: {fileID: 5785984500254894090, guid: 666ebfeae96967e4ab7f29cf710a978b,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5785984500254894090, guid: 666ebfeae96967e4ab7f29cf710a978b,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5785984500254894090, guid: 666ebfeae96967e4ab7f29cf710a978b,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5785984500254894090, guid: 666ebfeae96967e4ab7f29cf710a978b,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5785984500254894090, guid: 666ebfeae96967e4ab7f29cf710a978b,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5785984500254894090, guid: 666ebfeae96967e4ab7f29cf710a978b,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5785984500254894090, guid: 666ebfeae96967e4ab7f29cf710a978b,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 1555112380537054848, guid: 666ebfeae96967e4ab7f29cf710a978b, type: 3}
+    - {fileID: 6383935118534940897, guid: 666ebfeae96967e4ab7f29cf710a978b, type: 3}
+    - {fileID: 1717654870930000527, guid: 666ebfeae96967e4ab7f29cf710a978b, type: 3}
+    - {fileID: 6255195011072872847, guid: 666ebfeae96967e4ab7f29cf710a978b, type: 3}
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 666ebfeae96967e4ab7f29cf710a978b, type: 3}
+--- !u!4 &3144490223079284461 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 5785984500254894090, guid: 666ebfeae96967e4ab7f29cf710a978b,
+    type: 3}
+  m_PrefabInstance: {fileID: 8928539152565122791}
+  m_PrefabAsset: {fileID: 0}

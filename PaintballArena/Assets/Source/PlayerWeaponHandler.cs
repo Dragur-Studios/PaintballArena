@@ -8,23 +8,30 @@ using UnityEngine;
 
 public class PlayerWeaponHandler : MonoBehaviour
 {
-    [field: SerializeField] public PlayerWeapon CurrentWeapon { get; private set; }
+    public Action OnAmmoChanged;
 
-    State state;
-    Vector3 targetPosition = Vector3.zero;
-
+    [Header("Poses")]
     [SerializeField] Transform aimDownSightPose;
     [SerializeField] Transform idlePose;
     [SerializeField] Transform runPose;
     [SerializeField] Transform crouchPose;
 
-    bool isAiming = false;
+    [Header("Cache")]
+    [SerializeField, ReadOnly] PlayerWeaponState state;
+    [SerializeField, ReadOnly] bool isAiming = false;
+    
+    [field: SerializeField] public PlayerWeapon CurrentWeapon { get; private set; }
 
     Animator anim;
+    Vector3 targetPosition = Vector3.zero;
 
-    public Action OnAmmoChanged;
 
-    public enum State
+    PlayerLocomotion locomotion;
+    PlayerInputDispatcher dispatcher;
+
+
+
+    public enum PlayerWeaponState
     {
         Idle,
         Run,
@@ -32,103 +39,41 @@ public class PlayerWeaponHandler : MonoBehaviour
         AimDownSight,
     }
 
+    [Header("Status Screens")]
     [SerializeField] TMP_Text magazineText;
     [SerializeField] TMP_Text ammoStorageText;
     [SerializeField] TMP_Text reloadingText;
     [SerializeField] TMP_Text outOfAmmoText;
 
+  
     private void Start()
     {
+        dispatcher = GetComponent<PlayerInputDispatcher>();
+        dispatcher.OnFireInputHeld += OnFireInputRecieved;
+        dispatcher.OnAimInputRecieved += OnAimInputRecieved;
+        dispatcher.OnReloadInputRecieved += OnReloadInputRecieved;
+
+        locomotion = GetComponent<PlayerLocomotion>();
+
         anim = GetComponent<Animator>();
 
         OnAmmoChanged += UpdateCurrentAmmoText;
-        
+
 
     }
 
-    void UpdateCurrentAmmoText()
+    void Update()
     {
-        var curAmmo = CurrentWeapon.CurrentMagazineCount;
-        var curStorage = CurrentWeapon.CurrentStorageCount;
-
-        magazineText.text = curAmmo.ToString();
-        ammoStorageText.text = curStorage.ToString();
-
-    }
-
-    private void Update()
-    {
-        if (Input.GetKey(KeyCode.Mouse0))
-        {
-            CurrentWeapon?.PullTrigger();
-        }
-
-        isAiming = Input.GetKey(KeyCode.Mouse1);
-
-        var isRunning = Input.GetKey(KeyCode.LeftShift);
-        var isCrouching = Input.GetKey(KeyCode.C);
-
-        var isReloading = CurrentWeapon.isReloading;
-        var isOutOfAmmo = CurrentWeapon.isOutOfAmmo;
-
-        reloadingText.enabled = isReloading;
-        outOfAmmoText.enabled = isOutOfAmmo;
-
-        if (isRunning)
-        {
-            state = State.Run;
-        }
-        if (isCrouching)
-        {
-            state = State.Crouch;
-        }
-        if(isAiming)
-        {
-            state = State.AimDownSight;
-        }
-        if (!isAiming && !isRunning)
-        {
-            state = State.Idle;
-        }
-        
-
         UpdateState();
-    }
 
-    private void FixedUpdate()
+        UpdateWeaponPosition();
+    }
+    void FixedUpdate()
     {
         var cur = CurrentWeapon.transform.position;
         CurrentWeapon.transform.position = Vector3.Lerp(cur, targetPosition, 10.0f * Time.deltaTime);
     }
-
-    private void UpdateState()
-    {
-        switch (state)
-        {
-            case State.Idle:
-                {
-                    targetPosition = idlePose.position;
-                }
-                break;
-            case State.Run:
-                {
-                    targetPosition = runPose.position;
-                }
-                break;
-            case State.Crouch:
-                {
-                    targetPosition = crouchPose.position;
-                }
-                break;
-            case State.AimDownSight:
-                {
-                    targetPosition = aimDownSightPose.position;
-                }
-                break;
-        }
-    }
-
-    public void OnAnimatorIK(int layerIndex)
+    void OnAnimatorIK(int layerIndex)
     {
         if (CurrentWeapon != null)
         {
@@ -151,6 +96,89 @@ public class PlayerWeaponHandler : MonoBehaviour
         }
     }
 
+
+    void UpdateCurrentAmmoText()
+    {
+        var curAmmo = CurrentWeapon.CurrentMagazineCount;
+        var curStorage = CurrentWeapon.CurrentStorageCount;
+
+        magazineText.text = curAmmo.ToString();
+        ammoStorageText.text = curStorage.ToString();
+
+    }
+
+    void OnFireInputRecieved(bool shouldFire)
+    {
+        if(shouldFire) CurrentWeapon?.PullTrigger();
+    }
+
+    void OnAimInputRecieved(bool shouldAim)
+    {
+        isAiming = shouldAim;
+    }
+
+    void OnReloadInputRecieved(bool shouldReload)
+    {
+        CurrentWeapon?.Reload();
+    }
+
+    void UpdateState()
+    {
+        var isSprinting = locomotion.CurrentState == PlayerLocomotion.LocomotionState.Sprint;
+        var isCrouching = locomotion.CurrentState == PlayerLocomotion.LocomotionState.Crouch;
+
+        var isReloading = CurrentWeapon.isReloading;
+        var isOutOfAmmo = CurrentWeapon.isOutOfAmmo;
+
+        reloadingText.enabled = isReloading;
+        outOfAmmoText.enabled = isOutOfAmmo;
+
+        if (isSprinting)
+        {
+            state = PlayerWeaponState.Run;
+        }
+        else if (isCrouching)
+        {
+            state = PlayerWeaponState.Crouch;
+        }
+        else if (isAiming)
+        {
+            state = PlayerWeaponState.AimDownSight;
+        }
+        else if (!isAiming && !isSprinting)
+        {
+            state = PlayerWeaponState.Idle;
+        }
+    }
+
+    void UpdateWeaponPosition()
+    {
+        switch (state)
+        {
+            case PlayerWeaponState.Idle:
+                {
+                    targetPosition = idlePose.position;
+                }
+                break;
+            case PlayerWeaponState.Run:
+                {
+                    targetPosition = runPose.position;
+                }
+                break;
+            case PlayerWeaponState.Crouch:
+                {
+                    targetPosition = crouchPose.position;
+                }
+                break;
+            case PlayerWeaponState.AimDownSight:
+                {
+                    targetPosition = aimDownSightPose.position;
+                }
+                break;
+        }
+    }
+
+
     public int GetMagizineSize()
     {
         return CurrentWeapon.MaxMagazineCount;
@@ -161,7 +189,7 @@ public class PlayerWeaponHandler : MonoBehaviour
         return CurrentWeapon.MaxStorageCount;
     }
 
-    internal bool AddAmmo(int amount)
+    public bool AddAmmo(int amount)
     {
         return CurrentWeapon.AddAmmoToStorage(amount);
     }
