@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 6255195011072872847}
   - component: {fileID: 6383935118534940897}
   - component: {fileID: 1717654870930000527}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: Paintball Projectile
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -134,7 +134,7 @@ Rigidbody:
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 0
-  m_CollisionDetection: 0
+  m_CollisionDetection: 2
 --- !u!114 &6383935118534940897
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -147,7 +147,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d56ff349c47d1134d895fbc7ec607c66, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ExplosionForce: 10000
+  ExplosionForce: 1000
+  ExplosionEffect: {fileID: 7885749431349192031, guid: 53c93d62b9500ee4ca0694d2219fc1ac,
+    type: 3}
+  IngoreTags:
+  - Player
+  contactLayers:
+    serializedVersion: 2
+    m_Bits: 1537
 --- !u!96 &1717654870930000527
 TrailRenderer:
   serializedVersion: 3

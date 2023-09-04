@@ -6,17 +6,8 @@ using UnityEditor.Experimental.Rendering;
 using UnityEngine;
 
 
-
 public class PlayerLocomotion : MonoBehaviour
 {
-    public enum LocomotionState
-    {
-        Walk,
-        Crouch,
-        Sprint,
-        InAir,
-        WallRun
-    }
 
     [SerializeField] Transform orientation;
 

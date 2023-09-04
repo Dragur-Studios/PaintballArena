@@ -6,6 +6,14 @@ using Unity.PlasticSCM.Editor.WebApi;
 using Unity.VisualScripting;
 using UnityEngine;
 
+public enum EquippedWeaponState
+{
+    Idle,
+    Run,
+    Crouch,
+    AimDownSight,
+}
+
 public class PlayerWeaponHandler : MonoBehaviour
 {
     public Action OnAmmoChanged;
@@ -17,10 +25,10 @@ public class PlayerWeaponHandler : MonoBehaviour
     [SerializeField] Transform crouchPose;
 
     [Header("Cache")]
-    [SerializeField, ReadOnly] PlayerWeaponState state;
+    [SerializeField, ReadOnly] EquippedWeaponState state;
     [SerializeField, ReadOnly] bool isAiming = false;
     
-    [field: SerializeField] public PlayerWeapon CurrentWeapon { get; private set; }
+    [field: SerializeField] public EquippedWeapon CurrentWeapon { get; private set; }
 
     Animator anim;
     Vector3 targetPosition = Vector3.zero;
@@ -31,19 +39,6 @@ public class PlayerWeaponHandler : MonoBehaviour
 
 
 
-    public enum PlayerWeaponState
-    {
-        Idle,
-        Run,
-        Crouch,
-        AimDownSight,
-    }
-
-    [Header("Status Screens")]
-    [SerializeField] TMP_Text magazineText;
-    [SerializeField] TMP_Text ammoStorageText;
-    [SerializeField] TMP_Text reloadingText;
-    [SerializeField] TMP_Text outOfAmmoText;
 
   
     private void Start()
@@ -57,7 +52,7 @@ public class PlayerWeaponHandler : MonoBehaviour
 
         anim = GetComponent<Animator>();
 
-        OnAmmoChanged += UpdateCurrentAmmoText;
+        //OnAmmoChanged += UpdateCurrentAmmoText;
 
 
     }
@@ -97,19 +92,26 @@ public class PlayerWeaponHandler : MonoBehaviour
     }
 
 
-    void UpdateCurrentAmmoText()
-    {
-        var curAmmo = CurrentWeapon.CurrentMagazineCount;
-        var curStorage = CurrentWeapon.CurrentStorageCount;
-
-        magazineText.text = curAmmo.ToString();
-        ammoStorageText.text = curStorage.ToString();
-
-    }
 
     void OnFireInputRecieved(bool shouldFire)
     {
-        if(shouldFire) CurrentWeapon?.PullTrigger();
+        if (shouldFire)
+        {
+            CurrentWeapon?.PullTrigger();
+        }
+        else
+        {
+            var ngen = FindObjectOfType<NotificationGenerator>();
+
+            if (CurrentWeapon.isOutOfAmmo)
+            {
+                ngen.GeneratePopup("Out of Ammo!!");
+            }
+            if (CurrentWeapon.isReloading)
+            {
+                ngen.GeneratePopup("Reloading!");
+            }
+        }
     }
 
     void OnAimInputRecieved(bool shouldAim)
@@ -119,35 +121,35 @@ public class PlayerWeaponHandler : MonoBehaviour
 
     void OnReloadInputRecieved(bool shouldReload)
     {
-        CurrentWeapon?.Reload();
+        if (shouldReload)
+        {
+            var ngen = FindObjectOfType<NotificationGenerator>();
+            ngen.GeneratePopup("Reloading!");
+
+            CurrentWeapon?.Reload();
+        }
     }
 
     void UpdateState()
     {
-        var isSprinting = locomotion.CurrentState == PlayerLocomotion.LocomotionState.Sprint;
-        var isCrouching = locomotion.CurrentState == PlayerLocomotion.LocomotionState.Crouch;
-
-        var isReloading = CurrentWeapon.isReloading;
-        var isOutOfAmmo = CurrentWeapon.isOutOfAmmo;
-
-        reloadingText.enabled = isReloading;
-        outOfAmmoText.enabled = isOutOfAmmo;
+        var isSprinting = locomotion.CurrentState == LocomotionState.Sprint;
+        var isCrouching = locomotion.CurrentState == LocomotionState.Crouch;
 
         if (isSprinting)
         {
-            state = PlayerWeaponState.Run;
+            state = EquippedWeaponState.Run;
         }
         else if (isCrouching)
         {
-            state = PlayerWeaponState.Crouch;
+            state = EquippedWeaponState.Crouch;
         }
         else if (isAiming)
         {
-            state = PlayerWeaponState.AimDownSight;
+            state = EquippedWeaponState.AimDownSight;
         }
         else if (!isAiming && !isSprinting)
         {
-            state = PlayerWeaponState.Idle;
+            state = EquippedWeaponState.Idle;
         }
     }
 
@@ -155,22 +157,22 @@ public class PlayerWeaponHandler : MonoBehaviour
     {
         switch (state)
         {
-            case PlayerWeaponState.Idle:
+            case EquippedWeaponState.Idle:
                 {
                     targetPosition = idlePose.position;
                 }
                 break;
-            case PlayerWeaponState.Run:
+            case EquippedWeaponState.Run:
                 {
                     targetPosition = runPose.position;
                 }
                 break;
-            case PlayerWeaponState.Crouch:
+            case EquippedWeaponState.Crouch:
                 {
                     targetPosition = crouchPose.position;
                 }
                 break;
-            case PlayerWeaponState.AimDownSight:
+            case EquippedWeaponState.AimDownSight:
                 {
                     targetPosition = aimDownSightPose.position;
                 }

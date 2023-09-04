@@ -35,7 +35,7 @@ public class PlayerCameraController : MonoBehaviour
 
         yRot += mosueX;
         xRot -= mouseY;
-        xRot = Mathf.Clamp(xRot, -90, 60);
+        xRot = Mathf.Clamp(xRot, -90, 90);
     }
 
 
