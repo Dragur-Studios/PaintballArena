@@ -22,6 +22,8 @@ public class PlayerInputDispatcher : MonoBehaviour
     public Action<bool> OnCrouchInputRecieved;
     public Action<bool> OnSprintInputRecieved;
 
+    public Action<bool> OnPauseInputRecieved;
+
     float FireInput = 0;
 
     private void OnEnable()
@@ -42,6 +44,7 @@ public class PlayerInputDispatcher : MonoBehaviour
             reciever.Combat.Reload.performed += DispatchReloadInput;
             reciever.Combat.Crouch.performed += DispatchCrouchInput;
 
+            reciever.Game.Pause.performed += DispatchPauseInput;
 
             reciever.Enable();
         }
@@ -77,6 +80,7 @@ public class PlayerInputDispatcher : MonoBehaviour
     void DispatchMovementInput(InputAction.CallbackContext ctx) => OnMoveInputRecieved?.Invoke(ctx.ReadValue<Vector2>());
     void DispatchLookInput(InputAction.CallbackContext ctx) => OnLookInputRecieved?.Invoke(ctx.ReadValue<Vector2>());
     void DispatchSprintInput(InputAction.CallbackContext ctx)=> OnSprintInputRecieved?.Invoke(ctx.ReadValue<float>() != 0);
+    void DispatchPauseInput(InputAction.CallbackContext ctx)=> OnPauseInputRecieved?.Invoke(ctx.ReadValue<float>() != 0);
     void DispatchAimInput(InputAction.CallbackContext ctx)=> OnAimInputRecieved?.Invoke(ctx.ReadValue<float>() != 0);
 
     bool hasPressedFireThisFrame = false;

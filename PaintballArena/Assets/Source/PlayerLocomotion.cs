@@ -1,8 +1,8 @@
 using Cinemachine.Utility;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
-using UnityEditor.Experimental.Rendering;
 using UnityEngine;
 
 
@@ -61,6 +61,7 @@ public class PlayerLocomotion : MonoBehaviour
     bool isCrouching = false;
     bool isGrounded;
 
+
     // cache
     RaycastHit slopeHit;
     Vector3 normalVector = Vector3.zero;
@@ -75,13 +76,15 @@ public class PlayerLocomotion : MonoBehaviour
     Rigidbody rigi;
     CapsuleCollider ccollider;
     PlayerInputDispatcher dispatcher;
-
+    Player player;
 
 
 
     // Start is called before the first frame update
     void Start()
     {
+        player = GetComponent<Player>();
+
         dispatcher = GetComponent<PlayerInputDispatcher>();
         dispatcher.OnMoveInputRecieved += OnMoveInputRecieved;
         dispatcher.OnCrouchInputRecieved += OnCrouchInputRecieved;
@@ -108,10 +111,19 @@ public class PlayerLocomotion : MonoBehaviour
 
     void OnMoveInputRecieved(Vector2 newDir)
     {
+        if (!player.isAlive)
+            return;
+        if (player.isPaused)
+            return;
         moveDir = newDir;
     }
     void OnCrouchInputRecieved(bool shouldCrouch)
     {
+        if (!player.isAlive)
+            return;
+        if (player.isPaused)
+            return;
+
         if (!isCrouching && shouldCrouch)
         {
             StartCrouch();
@@ -126,11 +138,19 @@ public class PlayerLocomotion : MonoBehaviour
     }
     void OnSprintInputRecieved(bool shouldSprint)
     {
+        if (!player.isAlive)
+            return;
+        if (player.isPaused)
+            return;
         isSprinting = shouldSprint;
     }
 
     void OnJumpInputRecieved(bool shouldJump)
     {
+        if (!player.isAlive)
+            return;
+        if (player.isPaused)
+            return;
         // double jump
         if (shouldJump && !isGrounded && doubleJumpsCount >= 1)
         {
@@ -145,6 +165,10 @@ public class PlayerLocomotion : MonoBehaviour
 
     private void Update()
     {
+        if (!player.isAlive)
+            return;
+        if (player.isPaused)
+            return;
         HandleGroundCheck();
         CheckForWalls();
 
@@ -165,12 +189,20 @@ public class PlayerLocomotion : MonoBehaviour
 
     void FixedUpdate()
     {
+        if (!player.isAlive)
+            return;
+        if (player.isPaused)
+            return;
         HandleMovement();
     }
 
     private void LateUpdate()
     {
-        
+        if (!player.isAlive)
+            return;
+        if (player.isPaused)
+            return;
+
         anim.SetFloat("Velocity H", moveDir.x);
         anim.SetFloat("Velocity V", moveDir.y);
 
@@ -490,5 +522,15 @@ public class PlayerLocomotion : MonoBehaviour
         }
     }
 
+    public void Die()
+    {
+        GameManager.SignalGameOver();
 
+        ccollider.enabled = false;
+        rigi.useGravity = false;
+
+        anim.CrossFade("Death", 0.1f);
+        Destroy(gameObject, 2.0f);
+
+    }
 }

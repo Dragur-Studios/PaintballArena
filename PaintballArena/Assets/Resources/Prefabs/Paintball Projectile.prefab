@@ -150,11 +150,9 @@ MonoBehaviour:
   ExplosionForce: 1000
   ExplosionEffect: {fileID: 7885749431349192031, guid: 53c93d62b9500ee4ca0694d2219fc1ac,
     type: 3}
-  IngoreTags:
-  - Player
   contactLayers:
     serializedVersion: 2
-    m_Bits: 1537
+    m_Bits: 132609
 --- !u!96 &1717654870930000527
 TrailRenderer:
   serializedVersion: 3

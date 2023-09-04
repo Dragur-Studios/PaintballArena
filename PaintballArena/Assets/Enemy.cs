@@ -13,7 +13,7 @@ public enum AIBehaviorState
     Attack
 }
 
-public class Enemy : MonoBehaviour
+public class Enemy : iGameStateListener
 {
 
     [field: SerializeField] public Transform Target { get; set; }
@@ -47,6 +47,10 @@ public class Enemy : MonoBehaviour
     bool isGrounded;
     bool isWallLeft = false;
     bool isWallRight = false;
+
+    public bool isAlive { get; private set; } = true;
+    public bool isPaused { get; private set; } = false;
+
 
     float moveSpeed;
 
@@ -121,7 +125,10 @@ public class Enemy : MonoBehaviour
                 break;
         }
     }
+    public override void HandleGamePaused()
+    {
 
+    }
     private void HandleGroundCheck()
     {
         var currentHeight = isCrouching ? CrouchingHeight : StandingHeight;
@@ -144,6 +151,10 @@ public class Enemy : MonoBehaviour
 
     private void LateUpdate()
     {
+        if (!isAlive)
+            return;
+        if (isPaused)
+            return;
 
         anim.SetFloat("Velocity H", agent.velocity.x);
         anim.SetFloat("Velocity V", agent.velocity.z);
@@ -152,7 +163,6 @@ public class Enemy : MonoBehaviour
         anim.SetBool("isWallRunning", isWallRunning);
         anim.SetBool("isWallLeft", isWallLeft);
         anim.SetBool("isWallRight", isWallRight);
-        anim.SetBool("isAiming", isAiming);
 
 
     }
@@ -204,6 +214,8 @@ public class Enemy : MonoBehaviour
                 break;
             case AIBehaviorState.Follow:
                 {
+                    if (Target == null)
+                        return;
                     var dist = Mathf.Abs((Target.position - transform.position).magnitude);
                     
                     if(dist > 5.0f)
@@ -220,7 +232,8 @@ public class Enemy : MonoBehaviour
                 break;
             case AIBehaviorState.Attack:
                 {
-                    
+                    if (Target == null)
+                        return;
                     var dist = Mathf.Abs((Target.position - transform.position).magnitude);
                     if (dist < minAttackRange)
                     {
@@ -237,7 +250,7 @@ public class Enemy : MonoBehaviour
                     else
                     {
                         // try to attack the player
-                        moveSpeed = MoveSpeed_WalkAiming;
+                        moveSpeed = MoveSpeed_Walk;
 
                     }
                    
@@ -311,6 +324,11 @@ public class Enemy : MonoBehaviour
 
     private void Update()
     {
+        if (!isAlive)
+            return;
+        if (isPaused)
+            return;
+
         HandleGroundCheck();
 
         UpdateLocomotionState();
@@ -352,7 +370,7 @@ public class Enemy : MonoBehaviour
                     return;
                 }
                 // stop moving the agent
-                agent.stoppingDistance = minAttackRange;
+                agent.stoppingDistance = 2.0f;
                 agent.SetDestination(Target.position);
                 AttackPlayer();
 
@@ -375,7 +393,7 @@ public class Enemy : MonoBehaviour
         dir.Normalize();
 
         var lookdir = Quaternion.LookRotation(dir, transform.up);
-        transform.rotation = lookdir;
+        transform.rotation = Quaternion.Slerp(transform.rotation, lookdir, 2.0f * Time.deltaTime);
 
         isAiming = true;
         
@@ -385,25 +403,57 @@ public class Enemy : MonoBehaviour
 
     void OnAnimatorIK(int layerIndex)
     {
+
+        float weight = CurrentWeapon != null && isAlive ? 1.0f : 0.0f;
+
         if (CurrentWeapon != null)
         {
             //RIGHT HAND IK 
-            anim.SetIKPositionWeight(AvatarIKGoal.RightHand, 1);
-            anim.SetIKRotationWeight(AvatarIKGoal.RightHand, 1);
-            anim.SetIKHintPositionWeight(AvatarIKHint.RightElbow, 1);
+            anim.SetIKPositionWeight(AvatarIKGoal.RightHand, weight);
+            anim.SetIKRotationWeight(AvatarIKGoal.RightHand, weight);
+            anim.SetIKHintPositionWeight(AvatarIKHint.RightElbow, weight);
 
             anim.SetIKHintPosition(AvatarIKHint.RightElbow, CurrentWeapon.RightHandIKHint.position);
             anim.SetIKPosition(AvatarIKGoal.RightHand, CurrentWeapon.RightHandIK.position);
             anim.SetIKRotation(AvatarIKGoal.RightHand, CurrentWeapon.RightHandIK.rotation);
 
             //LEFT HAND IK 
-            anim.SetIKPositionWeight(AvatarIKGoal.LeftHand, 1);
-            anim.SetIKRotationWeight(AvatarIKGoal.LeftHand, 1);
-            anim.SetIKHintPositionWeight(AvatarIKHint.LeftElbow, 1);
+            anim.SetIKPositionWeight(AvatarIKGoal.LeftHand, weight);
+            anim.SetIKRotationWeight(AvatarIKGoal.LeftHand, weight);
+            anim.SetIKHintPositionWeight(AvatarIKHint.LeftElbow, weight);
             anim.SetIKHintPosition(AvatarIKHint.LeftElbow, CurrentWeapon.LeftHandIKHint.position);
             anim.SetIKPosition(AvatarIKGoal.LeftHand, CurrentWeapon.LeftHandIK.position);
             anim.SetIKRotation(AvatarIKGoal.LeftHand, CurrentWeapon.LeftHandIK.rotation);
         }
     }
 
+    public void Die()
+    {
+        if(Target != null)
+            Target = null;
+
+        GetComponent<CapsuleCollider>().enabled = false;
+        
+        agent.SetDestination(transform.position);
+        isAlive = false;
+        anim.CrossFade("Death", 0.1f);
+
+        Destroy(gameObject, 5.0f);
+    }
+
+    public override void HandleGameOver()
+    {
+        if(Target != null)
+        {
+            Target = null;
+        }
+        agent.SetDestination(transform.position);
+        // clean up this memory
+        Destroy(gameObject, 0.5f);
+    }
+
+    public override void HandleGameUnpaused()
+    {
+
+    }
 }

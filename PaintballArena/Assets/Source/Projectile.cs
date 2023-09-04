@@ -1,11 +1,12 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Net.WebSockets;
 using UnityEngine;
 using UnityEngine.VFX;
 
 [RequireComponent(typeof(Rigidbody))]
-public class Projectile : MonoBehaviour
+public class Projectile : iGameStateListener
 {
     public float ExplosionForce = 100.0f;
     public GameObject ExplosionEffect = null;
@@ -13,12 +14,14 @@ public class Projectile : MonoBehaviour
     Rigidbody rigi;
     Vector3 lastPosition = Vector3.zero;
 
-    public List<string> IngoreTags = new List<string>();
     public LayerMask contactLayers;
 
     bool hasFired = false;
 
-    void Start()
+    bool isGameOver = false;
+    bool isGamePaused = false;
+
+    protected override void Start()
     {
         lastPosition = transform.position;
     }
@@ -27,21 +30,29 @@ public class Projectile : MonoBehaviour
     {
         Destroy(gameObject);
     }
+    public override void HandleGamePaused()
+    {
+        
+    }
+
     void FixedUpdate()
     {
-        if(!hasFired)
-        {
+        if(!hasFired )
             return;
-        }
+        
+        if (isGameOver)
+            return;
+
+        if (isGamePaused)
+            return;
 
         var direction = transform.position - lastPosition;
         Ray ray = new Ray(lastPosition, direction);
 
         Debug.DrawRay(ray.origin, ray.direction, Color.red, 1.0f);
 
-        if (Physics.Raycast(ray, out RaycastHit hit, direction.magnitude, contactLayers, QueryTriggerInteraction.Collide))
+        if (Physics.Raycast(ray, out RaycastHit hit, direction.magnitude, contactLayers))
         {
-            Debug.Log($"Hitting: {hit.collider.name}");
             StartTriggerImpact(hit);
         }
 
@@ -51,6 +62,18 @@ public class Projectile : MonoBehaviour
     private void StartTriggerImpact(RaycastHit hit)
     {
         CancelInvoke(nameof(DestroyIfAlive));
+
+        if (hit.collider.CompareTag("Player"))
+        {
+            var player = hit.collider.GetComponent<PlayerLocomotion>();
+            player.Die();
+            
+        }
+        else if (hit.collider.CompareTag("Enemy"))
+        {
+            var enemy = hit.collider.GetComponent<Enemy>();
+            enemy.Die();
+        }
 
         var vfxGO = Instantiate(ExplosionEffect);
         vfxGO.transform.position = hit.point;
@@ -72,5 +95,15 @@ public class Projectile : MonoBehaviour
         hasFired = true;
 
         Invoke(nameof(DestroyIfAlive), 3.0f);
+    }
+
+    public override void HandleGameOver()
+    {
+        isGameOver = true;
+    }
+
+    public override void HandleGameUnpaused()
+    {
+        isGamePaused = false;
     }
 }

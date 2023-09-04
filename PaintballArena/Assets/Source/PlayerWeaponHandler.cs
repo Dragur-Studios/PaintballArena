@@ -2,8 +2,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
-using Unity.PlasticSCM.Editor.WebApi;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public enum EquippedWeaponState
@@ -33,7 +31,7 @@ public class PlayerWeaponHandler : MonoBehaviour
     Animator anim;
     Vector3 targetPosition = Vector3.zero;
 
-
+    Player player;
     PlayerLocomotion locomotion;
     PlayerInputDispatcher dispatcher;
 
@@ -48,6 +46,7 @@ public class PlayerWeaponHandler : MonoBehaviour
         dispatcher.OnAimInputRecieved += OnAimInputRecieved;
         dispatcher.OnReloadInputRecieved += OnReloadInputRecieved;
 
+        player = GetComponent<Player>();
         locomotion = GetComponent<PlayerLocomotion>();
 
         anim = GetComponent<Animator>();
@@ -59,32 +58,44 @@ public class PlayerWeaponHandler : MonoBehaviour
 
     void Update()
     {
+        if (!player.isAlive)
+            return;
+        if (player.isPaused)
+            return;
+
         UpdateState();
 
         UpdateWeaponPosition();
     }
     void FixedUpdate()
     {
+        if (!player.isAlive)
+            return;
+        if (player.isPaused)
+            return;
+
         var cur = CurrentWeapon.transform.position;
         CurrentWeapon.transform.position = Vector3.Lerp(cur, targetPosition, 10.0f * Time.deltaTime);
     }
     void OnAnimatorIK(int layerIndex)
     {
+        float weight = CurrentWeapon != null && player.isAlive ? 1.0f : 0.0f;
+
         if (CurrentWeapon != null)
         {
             //RIGHT HAND IK 
-            anim.SetIKPositionWeight(AvatarIKGoal.RightHand, 1);
-            anim.SetIKRotationWeight(AvatarIKGoal.RightHand, 1);
-            anim.SetIKHintPositionWeight(AvatarIKHint.RightElbow, 1);
+            anim.SetIKPositionWeight(AvatarIKGoal.RightHand, weight);
+            anim.SetIKRotationWeight(AvatarIKGoal.RightHand, weight);
+            anim.SetIKHintPositionWeight(AvatarIKHint.RightElbow, weight);
 
             anim.SetIKHintPosition(AvatarIKHint.RightElbow, CurrentWeapon.RightHandIKHint.position);
             anim.SetIKPosition(AvatarIKGoal.RightHand, CurrentWeapon.RightHandIK.position);
             anim.SetIKRotation(AvatarIKGoal.RightHand, CurrentWeapon.RightHandIK.rotation);
 
             //LEFT HAND IK 
-            anim.SetIKPositionWeight(AvatarIKGoal.LeftHand, 1);
-            anim.SetIKRotationWeight(AvatarIKGoal.LeftHand, 1);
-            anim.SetIKHintPositionWeight(AvatarIKHint.LeftElbow, 1);
+            anim.SetIKPositionWeight(AvatarIKGoal.LeftHand, weight);
+            anim.SetIKRotationWeight(AvatarIKGoal.LeftHand, weight);
+            anim.SetIKHintPositionWeight(AvatarIKHint.LeftElbow, weight);
             anim.SetIKHintPosition(AvatarIKHint.LeftElbow, CurrentWeapon.LeftHandIKHint.position);
             anim.SetIKPosition(AvatarIKGoal.LeftHand, CurrentWeapon.LeftHandIK.position);
             anim.SetIKRotation(AvatarIKGoal.LeftHand, CurrentWeapon.LeftHandIK.rotation);
@@ -95,6 +106,11 @@ public class PlayerWeaponHandler : MonoBehaviour
 
     void OnFireInputRecieved(bool shouldFire)
     {
+        if (!player.isAlive)
+            return;
+        if (player.isPaused)
+            return;
+
         if (shouldFire)
         {
             CurrentWeapon?.PullTrigger();
@@ -116,11 +132,21 @@ public class PlayerWeaponHandler : MonoBehaviour
 
     void OnAimInputRecieved(bool shouldAim)
     {
+        if (!player.isAlive)
+            return;
+        if (player.isPaused)
+            return;
+
         isAiming = shouldAim;
     }
 
     void OnReloadInputRecieved(bool shouldReload)
     {
+        if (!player.isAlive)
+            return;
+        if (player.isPaused)
+            return;
+
         if (shouldReload)
         {
             var ngen = FindObjectOfType<NotificationGenerator>();

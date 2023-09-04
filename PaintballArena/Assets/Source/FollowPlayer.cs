@@ -19,6 +19,9 @@ public class FollowPlayer : MonoBehaviour
     }
     void Update()
     {
-        transform.position = followMe.position;
+        if(followMe != null)
+        {
+            transform.position = followMe.position;
+        }
     }
 }

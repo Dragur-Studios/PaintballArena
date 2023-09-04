@@ -2150,6 +2150,7 @@ MonoBehaviour:
   maxWallRunCameraTilt: 20
   currentWallRunCameraTilt: 0
   slideForce: 4
+  isAlive: 1
 --- !u!54 &4531926407396131404
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -2252,10 +2253,6 @@ MonoBehaviour:
   state: 0
   isAiming: 0
   <CurrentWeapon>k__BackingField: {fileID: 0}
-  magazineText: {fileID: 0}
-  ammoStorageText: {fileID: 0}
-  reloadingText: {fileID: 0}
-  outOfAmmoText: {fileID: 0}
 --- !u!114 &3351095004900679553
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -15,6 +15,12 @@ public class EnemyHeadTracking : MonoBehaviour
 
     private void Update()
     {
+        if (!enemy.isAlive)
+            return;
+
+        if (enemy.Target == null)
+            return;
+        
         lookTarget.position = new Vector3(enemy.Target.position.x, enemy.Target.position.y + 1.5f, enemy.Target.position.z);
 
     }
