@@ -22,7 +22,7 @@ public class PlayerInputDispatcher : MonoBehaviour
     public Action<bool> OnCrouchInputRecieved;
     public Action<bool> OnSprintInputRecieved;
 
-    public Action<bool> OnPauseInputRecieved;
+    bool isPaused = false;
 
     float FireInput = 0;
 
@@ -80,7 +80,26 @@ public class PlayerInputDispatcher : MonoBehaviour
     void DispatchMovementInput(InputAction.CallbackContext ctx) => OnMoveInputRecieved?.Invoke(ctx.ReadValue<Vector2>());
     void DispatchLookInput(InputAction.CallbackContext ctx) => OnLookInputRecieved?.Invoke(ctx.ReadValue<Vector2>());
     void DispatchSprintInput(InputAction.CallbackContext ctx)=> OnSprintInputRecieved?.Invoke(ctx.ReadValue<float>() != 0);
-    void DispatchPauseInput(InputAction.CallbackContext ctx)=> OnPauseInputRecieved?.Invoke(ctx.ReadValue<float>() != 0);
+    void DispatchPauseInput(InputAction.CallbackContext ctx) => OnPauseButtonRecieved(ctx.ReadValue<float>() != 0);
+
+    void OnPauseButtonRecieved(bool shouldPause)
+    {
+        if (shouldPause && !isPaused)
+        {
+            isPaused = true;
+
+
+            GameManager.SignalGamePaused();
+        }
+        else if (shouldPause && isPaused)
+        {
+            isPaused = false;
+
+            GameManager.SignalGameUnaused();
+        }
+    }
+
+
     void DispatchAimInput(InputAction.CallbackContext ctx)=> OnAimInputRecieved?.Invoke(ctx.ReadValue<float>() != 0);
 
     bool hasPressedFireThisFrame = false;

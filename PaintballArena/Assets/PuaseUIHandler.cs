@@ -1,39 +1,51 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
-public class PuaseUIHandler : MonoBehaviour
+public class PuaseUIHandler : iGameStateListener
 {
-    PlayerInputDispatcher dispatcher;
     GameObject pauseScreen;
 
-    private void Start()
+    bool isPaused = false;
+    bool isGameOver = false;
+    bool isGameStarted = false;
+
+    protected override void Start()
     {
+        base.Start();
+
         pauseScreen = transform.GetChild(0).gameObject;
         pauseScreen.SetActive(false);
 
-        dispatcher = FindObjectOfType<PlayerInputDispatcher>();
-        dispatcher.OnPauseInputRecieved += OnPauseButtonRecieved;
+    }
+    private void Update()
+    {
+        if (isGameOver)
+            return;
+
+        pauseScreen.SetActive(isPaused);
     }
 
-    bool isPaused = false;
 
-    void OnPauseButtonRecieved(bool shouldPause)
+    public override void HandleGameOver()
     {
-        if (shouldPause && !isPaused)
-        {
-            isPaused = true;
-            pauseScreen.SetActive(isPaused);
-            
+        isGameOver = true;
+    }
 
-            GameManager.SignalGamePaused();
-        }
-        else if (shouldPause && isPaused)
-        {
-            isPaused = false;
-            pauseScreen.SetActive(isPaused);
+    public override void HandleGamePaused()
+    {
+        isPaused = true;
+    }
 
-            GameManager.SignalGameUnaused();
-        }
+    public override void HandleGameUnpaused()
+    {
+        isPaused=false;
+    }
+
+    public override void HangleGameStarted()
+    {
+        isGameStarted = true;
+
     }
 }

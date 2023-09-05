@@ -114,4 +114,9 @@ public class GameUIOverHandler : iGameStateListener
     {
       
     }
+
+    public override void HangleGameStarted()
+    {
+
+    }
 }

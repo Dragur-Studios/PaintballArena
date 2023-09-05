@@ -1,87 +1,24 @@
-using Cinemachine.Utility;
-using System;
+
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
+
+
 using UnityEngine;
 
 
-public class PlayerLocomotion : MonoBehaviour
+public class PlayerLocomotion : HumanoidLocomotion
 {
+    public Transform orientation;
 
-    [SerializeField] Transform orientation;
-
-    [Header("Physics Settings")]
-    [SerializeField] LayerMask groundLayers;
-    [SerializeField] LayerMask wallLayer;
-    [SerializeField] float groundDrag = 4.0f;
-    [SerializeField] float maxSlopAngle = 45.0f;
-
-    [field: Header("Movement States")]
-    [field: SerializeField, ReadOnly] public LocomotionState CurrentState { get; private set; }
-
-    [Header("Walking")]
-    [SerializeField] float MoveSpeed_Walk = 3.7f;
-
-
-    [Header("Sprinting")]
-    [SerializeField] float MoveSpeed_Sprint = 5.333f;
-
-    [Header("Crouching")]
-    [SerializeField] float MoveSpeed_Crouch = 2.0f;
-
- 
-    [Header("Jumping")]
-    [SerializeField] float jumpForce = 5.0f;
-    [SerializeField] float jumpCooldown = 2.0f;
-    [SerializeField] float airMultiplier = 1.0f;
-    [SerializeField, ReadOnly] bool isReadyForJump = false;
-
-    [SerializeField] int allowedDoubleJumps = 1;
-    [SerializeField, ReadOnly] int doubleJumpsCount = 0;
-
-    [Header("Wall Running")]
-    [SerializeField] float wallRunForce = 12.0f;
-    [SerializeField] float maxWallRunTime = 1.5f;
-    [SerializeField] float maxWallSpeed = 12.0f;
-    [SerializeField] float maxWallRunCameraTilt = 30.0f;
-    [SerializeField, ReadOnly] float currentWallRunCameraTilt;
-
-
-    [Header("Sliding")]
-    [SerializeField] float slideForce = 4.0f;
-
-    // constants
-    const float CrouchingHeight = 1.0f;
-    const float StandingHeight = 2.0f;
-    
-    // state
-    bool isWallRunning = false;
-    bool isSprinting = false;
-    bool isCrouching = false;
-    bool isGrounded;
-
-
-    // cache
-    RaycastHit slopeHit;
-    Vector3 normalVector = Vector3.zero;
-    Vector2 moveDir = Vector2.zero;
-    Vector3 moveDirection = Vector3.zero;
-    bool isWallRight;
-    bool isWallLeft;
-    float moveSpeed;
-    
     // refernces
-    Animator anim;
+    HumanoidAnimatorController animator;
     Rigidbody rigi;
     CapsuleCollider ccollider;
     PlayerInputDispatcher dispatcher;
     Player player;
 
-
-
     // Start is called before the first frame update
-    void Start()
+    public override void Init()
     {
         player = GetComponent<Player>();
 
@@ -91,39 +28,25 @@ public class PlayerLocomotion : MonoBehaviour
         dispatcher.OnSprintInputRecieved += OnSprintInputRecieved;
         dispatcher.OnJumpInputRecieved += OnJumpInputRecieved;
         
-        SetCollisionHeight(StandingHeight);
+
+        ccollider = GetComponent<CapsuleCollider>();
+        SetColliderHeight(ref ccollider, StandingHeight);
         
         rigi = GetComponent<Rigidbody>();
         rigi.freezeRotation = true;
         ResetJump();
 
-        anim = GetComponentInChildren<Animator>();
-    }
-
-    private void SetCollisionHeight(float height)
-    {
-        ccollider = GetComponent<CapsuleCollider>();
-        ccollider.height = height;
-        var center = ccollider.center;
-        center.y = height * 0.5f;
-        ccollider.center = center;
+        animator = GetComponentInChildren<HumanoidAnimatorController>();
     }
 
     void OnMoveInputRecieved(Vector2 newDir)
     {
-        if (!player.isAlive)
-            return;
-        if (player.isPaused)
-            return;
+    
         moveDir = newDir;
     }
     void OnCrouchInputRecieved(bool shouldCrouch)
     {
-        if (!player.isAlive)
-            return;
-        if (player.isPaused)
-            return;
-
+        
         if (!isCrouching && shouldCrouch)
         {
             StartCrouch();
@@ -138,19 +61,13 @@ public class PlayerLocomotion : MonoBehaviour
     }
     void OnSprintInputRecieved(bool shouldSprint)
     {
-        if (!player.isAlive)
-            return;
-        if (player.isPaused)
-            return;
+      
         isSprinting = shouldSprint;
     }
 
     void OnJumpInputRecieved(bool shouldJump)
     {
-        if (!player.isAlive)
-            return;
-        if (player.isPaused)
-            return;
+       
         // double jump
         if (shouldJump && !isGrounded && doubleJumpsCount >= 1)
         {
@@ -163,15 +80,14 @@ public class PlayerLocomotion : MonoBehaviour
             HandleJump();
     }
 
-    private void Update()
-    {
-        if (!player.isAlive)
-            return;
-        if (player.isPaused)
-            return;
-        HandleGroundCheck();
-        CheckForWalls();
+    public override void StateUpdate()
+    {   
+        if(!player.isGameStarted) return;
+        if (!player.isAlive) return;
+        if (player.isPaused) return;
 
+        HandleGroundCheck();
+        CheckForWalls(transform.position, orientation, wallLayer, out isWallLeft, out isWallRight);
         UpdateState();
 
         moveDirection = orientation.forward * moveDir.y + orientation.right * moveDir.x;
@@ -187,70 +103,31 @@ public class PlayerLocomotion : MonoBehaviour
 
     }
 
-    void FixedUpdate()
+    public override void PhysicsUpdate()
     {
-        if (!player.isAlive)
-            return;
-        if (player.isPaused)
-            return;
+        if (!player.isGameStarted) return;
+        if (!player.isAlive) return;
+        if (player.isPaused) return;
+
         HandleMovement();
     }
 
-    private void LateUpdate()
+    public override void AnimatorUpdate()
     {
-        if (!player.isAlive)
-            return;
-        if (player.isPaused)
-            return;
+        if (!player.isGameStarted) return;
+        if (!player.isAlive) return;
+        if (player.isPaused) return;
 
-        anim.SetFloat("Velocity H", moveDir.x);
-        anim.SetFloat("Velocity V", moveDir.y);
+        animator.SetFloat("Velocity H", moveDir.x);
+        animator.SetFloat("Velocity V", moveDir.y);
 
-        anim.SetBool("isGrounded", isGrounded || isWallRunning);
-        anim.SetBool("isWallRunning", isWallRunning);
-        anim.SetBool("isWallLeft", isWallLeft);
-        anim.SetBool("isWallRight", isWallRight);
+        animator.SetBool("isGrounded", isGrounded || isWallRunning);
+        animator.SetBool("isWallRunning", isWallRunning);
+        animator.SetBool("isWallLeft", isWallLeft);
+        animator.SetBool("isWallRight", isWallRight);
 
     }
 
-
-
-    bool IsOnSlope()
-    {
-        var currentHeight = isCrouching ? CrouchingHeight : StandingHeight;
-        
-        Vector3 origin = transform.position;
-        origin.y += 0.5f;
-
-        float dist = currentHeight + 0.2f;
-
-        var dir = -orientation.transform.up;
-
-        if (Physics.Raycast(origin, dir, out slopeHit, dist))
-        {
-            float angle = Vector3.Angle(Vector3.up, slopeHit.normal);
-            return angle < maxSlopAngle && angle != 0;
-        }
-
-        return false;
-    }
-
-    Vector3 GetSlopeMovementDirection()
-    {
-        return Vector3.ProjectOnPlane(moveDirection, slopeHit.normal);
-    }
-
-    void FindNormal(out Vector3 normal)
-    {
-        var currentHeight = isCrouching ? CrouchingHeight : StandingHeight;
-        normal = Vector3.zero;
-
-        if (Physics.Raycast(transform.position, Vector3.down, out RaycastHit hit, currentHeight * 0.5f + 0.2f, groundLayers))
-        {
-            normal = hit.normal;
-        }
-
-    }
 
     void UpdateState()
     {
@@ -282,18 +159,14 @@ public class PlayerLocomotion : MonoBehaviour
             CurrentState = LocomotionState.InAir;
         }
 
-
-      
-
     }
 
     public void StartCrouch()
     {
-        SetCollisionHeight(CrouchingHeight);
+        SetColliderHeight(ref ccollider, CrouchingHeight);
 
         rigi.AddForce(Vector3.down * 5.0f, ForceMode.Impulse);
 
-        var isCrouching = anim.GetBool("isCrouching");
 
         if (rigi.velocity.magnitude > 0.5f && !isCrouching)
         {
@@ -301,7 +174,7 @@ public class PlayerLocomotion : MonoBehaviour
             {
                 rigi.AddForce(orientation.transform.forward * slideForce, ForceMode.Impulse);
                 rigi.AddForce(-orientation.transform.up * slideForce, ForceMode.Force);
-                anim.SetTrigger("Slide");
+                animator.Trigger("Slide");
 
                 Invoke(nameof(StopCrouch), 1.0f);
             }
@@ -315,14 +188,14 @@ public class PlayerLocomotion : MonoBehaviour
         }
         else
         {
-            anim.SetBool("isCrouching", true);
+            animator.SetBool("isCrouching", true);
         }
     }
 
     void StopCrouch()
     {
-        anim.SetBool("isCrouching", false);
-        SetCollisionHeight(StandingHeight);
+        animator.SetBool("isCrouching", false);
+        SetColliderHeight( ref ccollider , StandingHeight);
     }
 
     void HandleCameraTilt()
@@ -353,7 +226,7 @@ public class PlayerLocomotion : MonoBehaviour
         if (!isGrounded)
             rigi.AddForce(Vector3.down * Time.deltaTime * gravityMultiplier);
 
-        if (IsOnSlope())
+        if (IsOnSlope(orientation))
         {
             rigi.AddForce(GetSlopeMovementDirection() * moveSpeed * 10.0f, ForceMode.Force);
         }
@@ -367,6 +240,12 @@ public class PlayerLocomotion : MonoBehaviour
         {
             doubleJumpsCount = allowedDoubleJumps;
         }
+
+        if (isWallRunning)
+        {
+            if (!isWallRight && !isWallLeft)
+                StopWallRunning();
+        }
     }
 
     //-----------------------------------------------------------
@@ -375,7 +254,7 @@ public class PlayerLocomotion : MonoBehaviour
 
     void HandleJump()
     {
-        anim.CrossFade("Jump", 0.1f);
+        animator.Crossfade("Jump");
 
         // Handle Default Jump
         if (isGrounded)
@@ -476,14 +355,7 @@ public class PlayerLocomotion : MonoBehaviour
 
     }
 
-    void CheckForWalls()
-    {
-        isWallRight = Physics.Raycast(transform.position, orientation.right, 1.0f, wallLayer);
-        isWallLeft = Physics.Raycast(transform.position, -orientation.right, 1.0f, wallLayer);
 
-        if (!isWallRight && !isWallLeft && isWallRunning)
-            StopWallRunning();
-    }
 
 
 
@@ -502,35 +374,25 @@ public class PlayerLocomotion : MonoBehaviour
         }
     }
 
-    private void HandleGroundCheck()
-    {
-        var currentHeight = isCrouching ? CrouchingHeight : StandingHeight;
+    //private void HandleGroundCheck()
+    //{
+    //    var currentHeight = isCrouching ? CrouchingHeight : StandingHeight;
 
-        var origin = transform.position;
-        origin.y += currentHeight * 0.5f;
+    //    var origin = transform.position;
+    //    origin.y += currentHeight * 0.5f;
 
-        var dir = -orientation.up;
-        var dist = currentHeight * 0.5f + 0.2f;
-        isGrounded = Physics.Raycast(origin, dir, out RaycastHit hit, dist, groundLayers);
+    //    var dir = -orientation.up;
+    //    var dist = currentHeight * 0.5f + 0.2f;
+    //    isGrounded = Physics.Raycast(origin, dir, out RaycastHit hit, dist, groundLayers);
 
-        Debug.DrawLine(origin, origin + dir * dist, isGrounded ? Color.green : Color.red, 0.1f);
+    //    Debug.DrawLine(origin, origin + dir * dist, isGrounded ? Color.green : Color.red, 0.1f);
 
-        if (isGrounded)
-        {
-            normalVector = hit.normal;
-            Debug.DrawLine(hit.point, hit.point + hit.normal, Color.blue, 0.1f);
-        }
-    }
+    //    if (isGrounded)
+    //    {
+    //        normalVector = hit.normal;
+    //        Debug.DrawLine(hit.point, hit.point + hit.normal, Color.blue, 0.1f);
+    //    }
+    //}
 
-    public void Die()
-    {
-        GameManager.SignalGameOver();
 
-        ccollider.enabled = false;
-        rigi.useGravity = false;
-
-        anim.CrossFade("Death", 0.1f);
-        Destroy(gameObject, 2.0f);
-
-    }
 }

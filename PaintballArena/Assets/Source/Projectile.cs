@@ -20,7 +20,7 @@ public class Projectile : iGameStateListener
 
     bool isGameOver = false;
     bool isGamePaused = false;
-
+   
     protected override void Start()
     {
         lastPosition = transform.position;
@@ -53,6 +53,12 @@ public class Projectile : iGameStateListener
 
         if (Physics.Raycast(ray, out RaycastHit hit, direction.magnitude, contactLayers))
         {
+            if (isGameOver)
+                return;
+
+            if (isGamePaused)
+                return;
+
             StartTriggerImpact(hit);
         }
 
@@ -65,8 +71,10 @@ public class Projectile : iGameStateListener
 
         if (hit.collider.CompareTag("Player"))
         {
-            var player = hit.collider.GetComponent<PlayerLocomotion>();
-            player.Die();
+            var player = hit.collider.GetComponent<Player>();
+            player.Die(); // the player cleans themselves up.
+
+            GameManager.SignalGameOver();
             
         }
         else if (hit.collider.CompareTag("Enemy"))
@@ -105,5 +113,10 @@ public class Projectile : iGameStateListener
     public override void HandleGameUnpaused()
     {
         isGamePaused = false;
+    }
+
+    public override void HangleGameStarted()
+    {
+      
     }
 }

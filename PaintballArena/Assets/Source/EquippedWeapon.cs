@@ -1,59 +1,72 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Experimental.Rendering;
 
 public class EquippedWeapon : MonoBehaviour
 {
-    [Header("Handling Settings")]
-    [SerializeField] float fireRateRPM = 60.0f;
-    [field: SerializeField] public int MaxMagazineCount { get; private set; } = 30;
-    [field: SerializeField] public int MaxStorageCount { get; private set; } = 300;
-    [HideInInspector] public int CurrentMagazineCount { get; private set; }
-    [HideInInspector] public int CurrentStorageCount { get; private set; }
-
-    [SerializeField] float reloadTimeS = 1.35f;
+    [SerializeField] WeaponData startData = null; 
+    WeaponData data; 
 
     [Header("Projectile Settings")]
     [SerializeField] Transform muzzle;
-    [SerializeField] GameObject projectilePrefab;
+    GameObject projectilePrefab;
 
-    [field: Header("IK Settings")]
-    [field: Header("Left Hand")]
-    [field: SerializeField ]public Transform LeftHandIK{ get; private set; }
-    [field: SerializeField ]public Transform LeftHandIKHint{ get; private set; }
-    [field: Header("Right Hand")]
-    [field: SerializeField ]public Transform RightHandIK { get; private set; }
-    [field: SerializeField ]public Transform RightHandIKHint { get; private set; }
+    public Transform LeftHandIK{ get; private set; }
+    public Transform LeftHandIKHint{ get; private set; }
+    public Transform RightHandIK { get; private set; }
+    public Transform RightHandIKHint { get; private set; }
 
     bool canFire = true;
-    public bool isReloading = false;
-    public bool isOutOfAmmo { get => CurrentStorageCount <= 0 && CurrentMagazineCount <= 0; }
+    public bool isOutOfAmmo { get => data.CurrentStorageCount <= 0 && data.CurrentMagazineCount <= 0; }
 
+    [ReadOnly] public bool isReloading = false;
     // a subscribable action to call consectutive functions (void()) 
     Action OnTriggerPulled;
 
-    PlayerWeaponHandler handler;
+    WeaponHandler handler;
 
-    private void Start()
+    public int MaxMagazineCount { get => data.MaxMagazineCount; }
+    public int MaxStorageCount { get => data.MaxStorageCount; }
+
+    public int CurrentMagazineCount { get => data.CurrentMagazineCount; }
+    public int CurrentStorageCount { get => data.CurrentStorageCount;  }
+
+    void Init(WeaponHandler weaponHandler)
     {
+        // search for ikgoals
+
+        var goals = GetComponentsInChildren<IKGoal>().ToList();
+        var hints = transform.parent.GetComponentsInChildren<IKHint>().ToList();
+
+        LeftHandIK = goals.First(g => g.GoalType == IKGoalType.LeftHand).transform;
+        RightHandIK = goals.First(g => g.GoalType == IKGoalType.LeftHand).transform;
+        RightHandIKHint = hints.First(h => h.HintType == IKHintType.RightElbow).transform;
+        LeftHandIKHint = hints.First(h => h.HintType == IKHintType.LeftElbow).transform;
+
+
+        // ensure the data buffer is not modifying the original
+        data = Instantiate(startData); 
+
+        handler = weaponHandler;
         handler = FindObjectOfType<PlayerWeaponHandler>();
 
-        CurrentMagazineCount = MaxMagazineCount;
-        CurrentStorageCount = MaxStorageCount;
+        data.CurrentMagazineCount = data.MaxMagazineCount;
+        data.CurrentStorageCount = data.MaxStorageCount;
 
         handler.OnAmmoChanged?.Invoke();
 
         OnTriggerPulled += StartFiring;
         OnTriggerPulled += SpawnProjectile;
         OnTriggerPulled += RechamberRound;
-
     }
 
+  
     public void Reload()
     {
-        if (CurrentMagazineCount >= MaxMagazineCount || CurrentStorageCount <= 0)
+        if (data.CurrentMagazineCount >= data.MaxMagazineCount || data.CurrentStorageCount <= 0)
             return;
 
         StartReload();
@@ -71,34 +84,34 @@ public class EquippedWeapon : MonoBehaviour
 
     void RechamberRound()
     {
-        if(CurrentMagazineCount <= 0)
+        if(data.CurrentMagazineCount <= 0)
         {
-            CurrentMagazineCount = 0;
+            data.CurrentMagazineCount = 0;
             StartReload();
             return;
 
         }
 
-        CurrentMagazineCount--;
+        data.CurrentMagazineCount--;
         handler.OnAmmoChanged?.Invoke();
 
-        Invoke(nameof(StopFiring), 60.0f / fireRateRPM );
+        Invoke(nameof(StopFiring), 60.0f / data.FireRate );
     }
 
     void StartReload()
     {
         isReloading = true;
         canFire = false;
-        if (CurrentStorageCount <= 0)
+        if (data.CurrentStorageCount <= 0)
         {
             // there is nothing to reload. we cannot reload.
-            CurrentStorageCount = 0;
+            data.CurrentStorageCount = 0;
             isReloading = false;
             return;
         }
 
         // recycle ammo..
-        int currentMagCount = CurrentMagazineCount;
+        int currentMagCount = data.CurrentMagazineCount;
         if (currentMagCount > 0)
         {
             AddAmmoToStorage(currentMagCount);
@@ -106,26 +119,26 @@ public class EquippedWeapon : MonoBehaviour
         handler.OnAmmoChanged?.Invoke();
 
 
-        Invoke(nameof(StopReloading), reloadTimeS);
+        Invoke(nameof(StopReloading), data.reloadTimeS);
     }
 
     private void RemoveAmmoFromStorage(int amount)
     {
         // if there is nothing to remove from the sorage break early
-        if (CurrentStorageCount <= 0)
+        if (data.CurrentStorageCount <= 0)
             return;
         // if we have some but not enough to fill the mag. add it
-        else if ( amount > CurrentStorageCount && CurrentStorageCount > 0)
+        else if ( amount > data.CurrentStorageCount && data.CurrentStorageCount > 0)
         {
-            int remaining = CurrentStorageCount;
-            CurrentStorageCount = 0;              // just remove everything from the storage
-            CurrentMagazineCount = remaining;     // add what is in the storage
+            int remaining = data.CurrentStorageCount;
+            data.CurrentStorageCount = 0;              // just remove everything from the storage
+            data.CurrentMagazineCount = remaining;     // add what is in the storage
         }
         // there is sufficient ammo, remove a magazine
         else
         {
-            CurrentStorageCount -= amount;              // remove the amount requested
-            CurrentMagazineCount = amount;              // update the magazine
+            data.CurrentStorageCount -= amount;              // remove the amount requested
+            data.CurrentMagazineCount = amount;              // update the magazine
         }
     }
 
@@ -140,7 +153,7 @@ public class EquippedWeapon : MonoBehaviour
     }
     void StopReloading()
     {
-        RemoveAmmoFromStorage(MaxMagazineCount);
+        RemoveAmmoFromStorage(data.MaxMagazineCount);
         handler.OnAmmoChanged?.Invoke();
 
         isReloading = false;
@@ -161,18 +174,18 @@ public class EquippedWeapon : MonoBehaviour
 
     internal bool AddAmmoToStorage(int amount)
     {
-        if (CurrentStorageCount >= MaxStorageCount)
+        if (data.CurrentStorageCount >= data.MaxStorageCount)
         {
-            CurrentStorageCount = MaxStorageCount; // just to be sure because of the above check could result in having too much ammo
+            data.CurrentStorageCount = data.MaxStorageCount; // just to be sure because of the above check could result in having too much ammo
             return false;
         }
 
         // if the amount is equal to the max storage amount it means that we are adding from a crate.
         // go ahead and skip this step if we are picking up a crate.
-        if(amount != MaxStorageCount)
+        if(amount != data.MaxStorageCount)
         {
-            var sum = (CurrentStorageCount + amount);
-            var diff = sum - MaxStorageCount;
+            var sum = (data.CurrentStorageCount + amount);
+            var diff = sum - data.MaxStorageCount;
             if (diff >= 10) // tolerence of 10 being added before it cannot be picked up
             {
                 return false;
@@ -183,11 +196,11 @@ public class EquippedWeapon : MonoBehaviour
         bool shouldReload = false;
 
         // where we out of ammo when we picked this up?
-        if(CurrentStorageCount == 0)
+        if(data.CurrentStorageCount == 0)
             shouldReload = true; // trigger a reload automatically 
 
-        CurrentStorageCount += amount;
-        CurrentStorageCount = Mathf.Clamp(CurrentStorageCount, 0, MaxStorageCount);
+        data.CurrentStorageCount += amount;
+        data.CurrentStorageCount = Mathf.Clamp(data.CurrentStorageCount, 0, data.MaxStorageCount);
         handler.OnAmmoChanged?.Invoke();
 
         if (shouldReload)
@@ -198,4 +211,32 @@ public class EquippedWeapon : MonoBehaviour
         return true;
 
     }
+
+    public static void CreateWeaponAndGiveToHandler(WeaponHandler handler, GameObject weaponPrefab, GameObject projectilePrefab)
+    {
+        EquippedWeapon weapon = CreateWeaponForHandler(handler, weaponPrefab, projectilePrefab);
+        GiveHandlerWeapon(handler, weapon);
+    }
+
+    static EquippedWeapon CreateWeaponForHandler(WeaponHandler handler, GameObject weaponPrefab, GameObject projectilePrefab)
+    {
+        var parent = handler.WeaponParent;
+        var go = Instantiate(weaponPrefab);
+        go.transform.SetParent(parent.transform, false);
+        var weapon = go.GetComponent<EquippedWeapon>();
+        weapon.projectilePrefab = projectilePrefab;
+        return weapon;
+    }
+
+    public static void GiveHandlerWeapon(WeaponHandler target, EquippedWeapon weapon)
+    {
+        target.CurrentWeapon = weapon;
+        weapon.Init(target);
+
+    }
+    public static void RemoveFrom(WeaponHandler target)
+    {
+        target.DropWeapon();
+    }
+
 }

@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.InputSystem.XR.Haptics;
 
 public enum EquippedWeaponState
 {
@@ -12,22 +13,8 @@ public enum EquippedWeaponState
     AimDownSight,
 }
 
-public class PlayerWeaponHandler : MonoBehaviour
+public class PlayerWeaponHandler : WeaponHandler
 {
-    public Action OnAmmoChanged;
-
-    [Header("Poses")]
-    [SerializeField] Transform aimDownSightPose;
-    [SerializeField] Transform idlePose;
-    [SerializeField] Transform runPose;
-    [SerializeField] Transform crouchPose;
-
-    [Header("Cache")]
-    [SerializeField, ReadOnly] EquippedWeaponState state;
-    [SerializeField, ReadOnly] bool isAiming = false;
-    
-    [field: SerializeField] public EquippedWeapon CurrentWeapon { get; private set; }
-
     Animator anim;
     Vector3 targetPosition = Vector3.zero;
 
@@ -35,12 +22,10 @@ public class PlayerWeaponHandler : MonoBehaviour
     PlayerLocomotion locomotion;
     PlayerInputDispatcher dispatcher;
 
-
-
-
-  
-    private void Start()
+    protected override void Start()
     {
+        base.Start();
+
         dispatcher = GetComponent<PlayerInputDispatcher>();
         dispatcher.OnFireInputHeld += OnFireInputRecieved;
         dispatcher.OnAimInputRecieved += OnAimInputRecieved;
@@ -51,21 +36,22 @@ public class PlayerWeaponHandler : MonoBehaviour
 
         anim = GetComponent<Animator>();
 
-        //OnAmmoChanged += UpdateCurrentAmmoText;
 
+        EquippedWeapon.CreateWeaponAndGiveToHandler(this, weaponPrefab, projectilePrefab);
 
     }
 
-    void Update()
+    protected override void Update()
     {
         if (!player.isAlive)
             return;
         if (player.isPaused)
             return;
+        if (!player.isGameStarted)
+            return;
 
-        UpdateState();
-
-        UpdateWeaponPosition();
+        base.Update();
+    
     }
     void FixedUpdate()
     {
@@ -73,10 +59,13 @@ public class PlayerWeaponHandler : MonoBehaviour
             return;
         if (player.isPaused)
             return;
+        if(!player.isGameStarted) 
+            return;
 
-        var cur = CurrentWeapon.transform.position;
-        CurrentWeapon.transform.position = Vector3.Lerp(cur, targetPosition, 10.0f * Time.deltaTime);
+        //var cur = CurrentWeapon.transform.position;
+        //CurrentWeapon.transform.position = targetPosition;
     }
+
     void OnAnimatorIK(int layerIndex)
     {
         float weight = CurrentWeapon != null && player.isAlive ? 1.0f : 0.0f;
@@ -101,8 +90,6 @@ public class PlayerWeaponHandler : MonoBehaviour
             anim.SetIKRotation(AvatarIKGoal.LeftHand, CurrentWeapon.LeftHandIK.rotation);
         }
     }
-
-
 
     void OnFireInputRecieved(bool shouldFire)
     {
@@ -156,69 +143,27 @@ public class PlayerWeaponHandler : MonoBehaviour
         }
     }
 
-    void UpdateState()
+    public override void OnStateUpdate()
     {
         var isSprinting = locomotion.CurrentState == LocomotionState.Sprint;
         var isCrouching = locomotion.CurrentState == LocomotionState.Crouch;
 
         if (isSprinting)
         {
-            state = EquippedWeaponState.Run;
+            WeaponState = EquippedWeaponState.Run;
         }
         else if (isCrouching)
         {
-            state = EquippedWeaponState.Crouch;
+            WeaponState = EquippedWeaponState.Crouch;
         }
         else if (isAiming)
         {
-            state = EquippedWeaponState.AimDownSight;
+            WeaponState = EquippedWeaponState.AimDownSight;
         }
         else if (!isAiming && !isSprinting)
         {
-            state = EquippedWeaponState.Idle;
+            WeaponState = EquippedWeaponState.Idle;
         }
     }
 
-    void UpdateWeaponPosition()
-    {
-        switch (state)
-        {
-            case EquippedWeaponState.Idle:
-                {
-                    targetPosition = idlePose.position;
-                }
-                break;
-            case EquippedWeaponState.Run:
-                {
-                    targetPosition = runPose.position;
-                }
-                break;
-            case EquippedWeaponState.Crouch:
-                {
-                    targetPosition = crouchPose.position;
-                }
-                break;
-            case EquippedWeaponState.AimDownSight:
-                {
-                    targetPosition = aimDownSightPose.position;
-                }
-                break;
-        }
-    }
-
-
-    public int GetMagizineSize()
-    {
-        return CurrentWeapon.MaxMagazineCount;
-    }
-
-    public int GetStorageSize()
-    {
-        return CurrentWeapon.MaxStorageCount;
-    }
-
-    public bool AddAmmo(int amount)
-    {
-        return CurrentWeapon.AddAmmoToStorage(amount);
-    }
 }

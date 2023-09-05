@@ -3,17 +3,19 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
-public class AmmoUIHandler : MonoBehaviour
+public class AmmoUIHandler : iGameStateListener
 {
     PlayerWeaponHandler handler;
 
     [SerializeField] TMP_Text magazineText;
     [SerializeField] TMP_Text ammoStorageText;
 
-    private void Start()
+   
+
+    protected override void Start()
     {
-        handler = FindObjectOfType<PlayerWeaponHandler>();
-        handler.OnAmmoChanged += UpdateCurrentAmmoText;
+        base.Start();
+
     }
 
     void UpdateCurrentAmmoText()
@@ -26,5 +28,21 @@ public class AmmoUIHandler : MonoBehaviour
 
     }
 
+    public override void HandleGameOver()
+    {
+    }
 
+    public override void HandleGamePaused()
+    {
+    }
+
+    public override void HandleGameUnpaused()
+    {
+    }
+
+    public override void HangleGameStarted()
+    {
+        handler = FindObjectOfType<PlayerWeaponHandler>();
+        handler.OnAmmoChanged += UpdateCurrentAmmoText;
+    }
 }

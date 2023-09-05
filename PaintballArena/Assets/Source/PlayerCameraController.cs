@@ -22,23 +22,19 @@ public class PlayerCameraController : iGameStateListener
 
     bool isGameOver = false;
     bool isGamePaused = false;
+    bool isGameStarted = false;
 
     protected override void Start()
     {
-        dispatcher = FindObjectOfType<PlayerInputDispatcher>();
-        locomotion = dispatcher.GetComponent<PlayerLocomotion>();
-        player = locomotion.GetComponent<Player>();
-        
-        dispatcher.OnLookInputRecieved += OnLookInputRecieved;
-
+        base.Start();
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
 
     }
 
-    void OnLookInputRecieved(Vector2 newLookDir)
+    public void OnLookInputRecieved(Vector2 newLookDir)
     {
-        if (isGameOver || isGamePaused)
+        if (isGameOver || isGamePaused || !isGameStarted)
             return;
 
         float mosueX = newLookDir.x * Time.deltaTime * sensX;
@@ -52,12 +48,8 @@ public class PlayerCameraController : iGameStateListener
 
     private void Update()
     {
-        if (isGameOver || isGamePaused)
-        {
-            //Cursor.lockState = CursorLockMode.None;
-            //Cursor.visible = true;
+        if (isGameOver || isGamePaused || !isGameStarted)
             return;
-        }
 
 
         transform.localRotation = Quaternion.Euler(xRot, yRot, Tilt);
@@ -68,6 +60,9 @@ public class PlayerCameraController : iGameStateListener
 
     public override void HandleGameOver()
     {
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+
         isGameOver = true;
     }
 
@@ -85,5 +80,10 @@ public class PlayerCameraController : iGameStateListener
 
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
+    }
+
+    public override void HangleGameStarted()
+    {
+        isGameStarted = true;
     }
 }

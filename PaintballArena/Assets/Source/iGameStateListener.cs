@@ -10,8 +10,8 @@ public abstract class iGameStateListener : MonoBehaviour
 
     public abstract void HandleGameOver();
 
+    public abstract void HangleGameStarted();
     public abstract void HandleGamePaused();
     public abstract void HandleGameUnpaused();
-
 
 }
